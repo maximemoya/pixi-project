@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/pixi-project/",
+  //base: "/pixi-project/",
   build: {
     outDir: "docs",
   },
