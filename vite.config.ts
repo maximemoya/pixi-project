@@ -12,4 +12,8 @@ export default {
   build: {
     outDir: "docs",
   },
+  server: {
+    port: 8080,
+    open: true,
+  },
 };
