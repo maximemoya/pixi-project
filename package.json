@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run dev",
     "build": "npm run lint && tsc && vite build",
+    "build-dist": "npm run lint && tsc && vite build --outDir dist",
     "lint": "eslint .",
     "dev": "vite",
     "preview": "vite preview"
