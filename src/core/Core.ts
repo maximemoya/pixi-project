@@ -5,16 +5,16 @@ export class Core {
     private app: Application;
     private gridDataHorizontal = [
         [1, 1, 1, 0, 1, 0, 1, 0, 1],
-        [0, 0, 0, 1, 0, 1, 0, 1, 0],
+        [1, 1, 1, 1, 0, 1, 0, 1, 0],
         [1, 0, 1, 0, 1, 0, 1, 0, 1],
         [0, 1, 1, 1, 0, 1, 0, 1, 0],
         [1, 0, 1, 0, 1, 0, 1, 0, 1],
         [0, 1, 0, 1, 0, 1, 0, 1, 0]
     ];
     private gridDataVertical = [
-        [0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 0, 1],
-        [0, 1, 1, 1, 0, 1],
+        [0, 1, 0, 1, 1, 1],
+        [1, 0, 1, 0, 1, 1],
+        [0, 1, 1, 1, 1, 1],
         [1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1],
         [1, 0, 1, 0, 1, 0],
@@ -54,14 +54,16 @@ export class Core {
             this.onResize();
         });
 
-        // // Alternative: Listen to window resize directly
-        // window.addEventListener('resize', () => {
-        //     this.onResize();
-        // });
-
         // Call renderGrid() AFTER creating gridContainer
         this.renderGrid();
 
+    }
+
+    private updateGridForResizeOnly() {
+        this.GRID_WIDTH = this.gridData[0].length;
+        this.GRID_HEIGHT = this.gridData.length;
+        this.CELL_SIZE_X = this.app.screen.width / this.GRID_WIDTH;
+        this.CELL_SIZE_Y = this.app.screen.height / this.GRID_HEIGHT;
     }
 
     private updateGridForOrientation() {
@@ -130,7 +132,7 @@ export class Core {
     }
 
     private onResize() {
-        this.updateGridForOrientation();
+        this.updateGridForResizeOnly();
         this.renderGrid();
     }
 
