@@ -22,21 +22,20 @@ fullscreenButton.style.top = '50%';
 fullscreenButton.style.left = '50%';
 fullscreenButton.style.transform = 'translate(-50%, -50%)';
 fullscreenButton.style.zIndex = '1000';
-fullscreenButton.style.padding = '20px 40px';
-fullscreenButton.style.fontSize = '24px';
+fullscreenButton.style.padding = '40px 80px';
+fullscreenButton.style.fontSize = '48px';
 fullscreenButton.style.backgroundColor = '#007acc';
 fullscreenButton.style.color = 'white';
 fullscreenButton.style.border = 'none';
-fullscreenButton.style.borderRadius = '10px';
+fullscreenButton.style.borderRadius = '20px';
 fullscreenButton.style.cursor = 'pointer';
 fullscreenButton.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
 
 fullscreenButton.addEventListener('click', () => {
-    requestFullscreen();
+    // requestFullscreen();
     fullscreenButton.style.display = 'none'; // Cacher le bouton après activation
-
+    new Core();
 });
 
 document.body.appendChild(fullscreenButton);
-new Core();
 

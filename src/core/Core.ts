@@ -40,16 +40,17 @@ export class Core {
 
     async init() {
 
-        await this.app.init({ background: "#1099bb", resizeTo: window });
-        document.getElementById("pixi-container")?.appendChild(this.app.canvas);
+        const container = document.getElementById("pixi-container");
+        await this.app.init({ background: "#1099bb", resizeTo: container });
+        container?.appendChild(this.app.canvas)
 
         // Forcer le canvas à prendre exactement la taille de la fenêtre
-        this.app.canvas.style.position = 'absolute';
-        this.app.canvas.style.top = '0';
-        this.app.canvas.style.left = '0';
-        this.app.canvas.style.width = '100vw';
-        this.app.canvas.style.height = '100vh';
-        this.app.canvas.style.display = 'block';
+        // this.app.canvas.style.position = 'absolute';
+        // this.app.canvas.style.top = '0';
+        // this.app.canvas.style.left = '0';
+        // this.app.canvas.style.width = '100vw';
+        // this.app.canvas.style.height = '80vh';
+        // this.app.canvas.style.display = 'block';
         this.updateGridForOrientation();
 
         // Create container for grid - use this.gridContainer
@@ -68,8 +69,8 @@ export class Core {
 
     private updateGridForResizeOnly() {
         // Utiliser les dimensions exactes de la fenêtre
-        const actualWidth = window.innerWidth;
-        const actualHeight = window.innerHeight;
+        const actualWidth = this.app.screen.width;
+        const actualHeight = this.app.screen.height;
 
         this.GRID_WIDTH = this.gridData[0].length;
         this.GRID_HEIGHT = this.gridData.length;
@@ -120,9 +121,9 @@ export class Core {
                 cell.cursor = 'pointer';
 
                 // Add click/touch listener
-                // cell.on('pointerdown', () => {
-                //     this.onCellClick(row, col);
-                // });
+                cell.on('pointerdown', () => {
+                    this.onCellClick(row, col);
+                });
 
                 this.gridContainer.addChild(cell);
             }

@@ -12,38 +12,47 @@
 <style>
     body,
     html {
+        background-color: darkkhaki;
+        height: 100%;
         margin: 0;
         padding: 0;
-        width: 100vw;
-        height: 100vh;
-        /* Permettre le scroll vertical pour le refresh */
-        overflow-y: auto;
-        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
-    #app {
-        margin: 0;
-        padding: 0;
-        width: 100vw;
-        height: 100vh;
-        /* Permettre les interactions tactiles normales */
-        touch-action: auto;
+    #top {
+        height: 20vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     #pixi-container {
-        margin: 0;
-        padding: 0;
-        width: 100vw;
-        height: 100vh;
-        position: relative;
-        /* Permettre les interactions tactiles */
-        touch-action: auto;
+        height: 70vh;
+        width: 90vw;
+    }
+
+    #bottom {
+        height: 10vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 </style>
 
 <body>
-    <div id="app">
-        <div id="pixi-container"></div>
+    <div id="top">
+        <h1>Titre</h1>
+    </div>
+    <div id="pixi-container">
+        <!-- <div id="pixi-container"></div> -->
+    </div>
+    <div id="bottom">
+        <h2>créé par Maomao</h2>
     </div>
     <script type="module" src="/src/main.ts"></script>
 </body>
