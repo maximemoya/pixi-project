@@ -1,17 +1,51 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/pixi-project/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/pixi-project/style.css">
     <title>PixiJS - Template</title>
-  <script type="module" crossorigin src="/pixi-project/assets/index-DjkR6pjk.js"></script>
+  <script type="module" crossorigin src="/pixi-project/assets/index-DwkZWJAs.js"></script>
 </head>
+
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        /* Permettre le scroll vertical pour le refresh */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #app {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        /* Permettre les interactions tactiles normales */
+        touch-action: auto;
+    }
+
+    #pixi-container {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        /* Permettre les interactions tactiles */
+        touch-action: auto;
+    }
+</style>
 
 <body>
     <div id="app">
         <div id="pixi-container"></div>
     </div>
 </body>
+
 </html>
