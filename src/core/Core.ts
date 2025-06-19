@@ -52,7 +52,7 @@ export class Core {
 
         // Add resize event listener
         this.app.renderer.on('resize', () => {
-            this.onResize();
+            // this.onResize();
         });
 
         // Create container for grid - use this.gridContainer
@@ -60,9 +60,6 @@ export class Core {
         this.app.stage.addChild(this.gridContainer);
 
         new Mario({ value: this.gridContainer }, this.app, this.sounds)
-
-        // Call renderGrid() AFTER creating gridContainer
-        // this.renderGrid();
 
     }
 

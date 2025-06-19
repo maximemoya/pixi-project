@@ -33,7 +33,17 @@ export class Mario {
 
     // ------------------------------------------
 
+    public previousScore = 0
     public score = 0
+    public text: Text = new Text({
+        text: "score: " + this.score,
+        style: {
+            fontFamily: 'Arial',
+            fontSize: 24,
+            fill: 0xffffff, // white color
+            align: 'center'
+        }
+    })
 
     // ------------------------------------------
 
@@ -45,56 +55,130 @@ export class Mario {
     public spriteMario: Sprite | null = null
     private readonly spriteLocationIdle = { x: 1.5, y: 66.5, w: 15, h: 31 }
     private readonly spriteLocationJump = { x: 60.5, y: 66.5, w: 15, h: 31 }
-    private spriteLocationMarioActual = this.spriteLocationIdle
-    private marioTexture: any | null = null
+    public marioIdleTexture: Texture | null = null
+    public marioJumpTexture: Texture | null = null
+
+    // ------------------------------------------
 
     public spriteSheetKoopa: HTMLImageElement | null = null
     public spriteKoopa: Sprite | null = null
-    private spriteLocationKoopaActual = { x: 408.5, y: 229.5, w: 15, h: 15 }
-    private koopaTexture: any | null = null
+    private readonly spriteLocationKoopaIdle = { x: 408.5, y: 229.5, w: 15, h: 15 }
 
     // ------------------------------------------
 
     constructor(_container: { value: Container }, app: Application, sounds: { soundJump: HTMLAudioElement, soundBip: HTMLAudioElement, soundAou: HTMLAudioElement }) {
 
+        this.container = _container.value
+        this.container.eventMode = "static"
+        this.container.removeChildren();
+        this.container.onpointerdown = () => {
+            this.jump()
+        }
+
+        this.sounds = sounds
+        setTimeout(() => {
+            this.sounds.soundAou.volume = 1.0
+            this.sounds.soundBip.volume = 1.0
+            this.sounds.soundJump.volume = 1.0
+        }, 1000);
+
+        this.squareCell.visible = true;
+        this.squareCell.zIndex = 9;
+        this.container.addChild(this.squareCell);
+
+        this.cubeCell.visible = true;
+        this.cubeCell.zIndex = 10;
+        this.container.addChild(this.cubeCell);
+
+        this.text.x = 25
+        this.text.y = 25
+        this.text.zIndex = 2
+
+        this.skyCell.cacheAsBitmap = true;
+        this.skyCell.zIndex = 1
+        this.skyCell.clear()
+        this.skyCell.rect(this.sky.x * app.screen.width,
+            this.sky.y * app.screen.height,
+            this.sky.w * app.screen.width,
+            this.sky.h * app.screen.height
+        );
+        this.skyCell.fill(this.sky.color);
+
+        this.groundCell.cacheAsBitmap = true;
+        this.groundCell.zIndex = 1
+        this.groundCell.clear()
+        this.groundCell.rect(this.ground.x * app.screen.width,
+            this.ground.y * app.screen.height,
+            this.ground.w * app.screen.width,
+            this.ground.h * app.screen.height
+        );
+        this.groundCell.fill(this.ground.color);
+
+        this.container.addChild(this.skyCell, this.groundCell, this.text);
+
         Assets.load("./assets/mario-spritesheet.png").then(
             (texture) => {
-                this.marioTexture = texture
-                const rectangle = new Rectangle(
-                    this.spriteLocationMarioActual.x,
-                    this.spriteLocationMarioActual.y,
-                    this.spriteLocationMarioActual.w,
-                    this.spriteLocationMarioActual.h
+
+                let rectangle = new Rectangle(
+                    this.spriteLocationIdle.x,
+                    this.spriteLocationIdle.y,
+                    this.spriteLocationIdle.w,
+                    this.spriteLocationIdle.h
                 );
-                const croppedTexture = new Texture({
+                this.marioIdleTexture = new Texture({
                     source: texture.source,
                     frame: rectangle
                 });
-                this.spriteMario = new Sprite(croppedTexture);
+
+                rectangle = new Rectangle(
+                    this.spriteLocationJump.x,
+                    this.spriteLocationJump.y,
+                    this.spriteLocationJump.w,
+                    this.spriteLocationJump.h
+                );
+                this.marioJumpTexture = new Texture({
+                    source: texture.source,
+                    frame: rectangle
+                });
+
+                this.spriteMario = new Sprite(this.marioIdleTexture);
+                this.spriteMario.width = this.square.w * app.screen.width
+                this.spriteMario.height = this.square.h * app.screen.height
+                this.spriteMario.visible = true;
+                this.spriteMario.zIndex = 9
+
+                this.container.addChild(this.spriteMario)
+                this.container.removeChild(this.squareCell)
+
             }
         )
         Assets.load("./assets/koopa-spritesheet-v1.png").then(
             (texture) => {
-                this.koopaTexture = texture
+
                 const rectangle = new Rectangle(
-                    this.spriteLocationKoopaActual.x,
-                    this.spriteLocationKoopaActual.y,
-                    this.spriteLocationKoopaActual.w,
-                    this.spriteLocationKoopaActual.h
+                    this.spriteLocationKoopaIdle.x,
+                    this.spriteLocationKoopaIdle.y,
+                    this.spriteLocationKoopaIdle.w,
+                    this.spriteLocationKoopaIdle.h
                 );
                 const croppedTexture = new Texture({
                     source: texture.source,
                     frame: rectangle
                 });
+
                 this.spriteKoopa = new Sprite(croppedTexture);
+                this.spriteKoopa.width = this.cube.w * app.screen.width
+                this.spriteKoopa.height = this.cube.h * app.screen.height
+                this.spriteKoopa.visible = true;
+                this.spriteKoopa.zIndex = 10
+
+                this.container.addChild(this.spriteKoopa)
+                this.container.removeChild(this.cubeCell)
+
             }
         )
 
-        this.container = _container.value
-        this.container.eventMode = "static"
-        this.container.onpointerdown = () => {
-            this.jump()
-        }
+        app.ticker.minFPS = 20
         app.ticker.maxFPS = 30
         app.ticker.add(() => {
             this.squareAction()
@@ -102,7 +186,6 @@ export class Mario {
             this.interactionBetweenSquareAndCube()
             this.render(app)
         })
-        this.sounds = sounds
 
     }
 
@@ -126,7 +209,6 @@ export class Mario {
             else {
                 this.jumpValue = 0.0
                 this.squareState = "onGround"
-                this.spriteLocationMarioActual = this.spriteLocationIdle
             }
             this.updatePosition()
         }
@@ -142,7 +224,6 @@ export class Mario {
             this.sounds.soundJump.play()
             this.initialYPosBeforeJump = this.square.y
             this.squareState = "jumping"
-            this.spriteLocationMarioActual = this.spriteLocationJump
         }
     }
 
@@ -151,11 +232,8 @@ export class Mario {
     private cubeAction() {
         if (this.cubeState === "movingLeft") {
             if (this.cube.x <= 0.0) {
-                if (this.sounds.soundBip) {
-                    this.sounds.soundBip.volume = 1.0
-                    this.sounds.soundBip.currentTime = 0
-                    this.sounds.soundBip.play()
-                }
+                this.sounds.soundBip.currentTime = 0
+                this.sounds.soundBip.play()
                 this.cubeState = "movingRight"
                 this.score += 1
                 if (this.cubeSpeedX < this.cubeSpeedXMax) {
@@ -168,11 +246,8 @@ export class Mario {
         }
         else if (this.cubeState === "movingRight") {
             if (this.cube.x > (0.99 - this.cube.w)) {
-                if (this.sounds.soundBip) {
-                    this.sounds.soundBip.volume = 1.0
-                    this.sounds.soundBip.currentTime = 0
-                    this.sounds.soundBip.play()
-                }
+                this.sounds.soundBip.currentTime = 0
+                this.sounds.soundBip.play()
                 this.cubeState = "movingLeft"
                 this.score += 1
                 if (this.cubeSpeedX < this.cubeSpeedXMax) {
@@ -193,11 +268,8 @@ export class Mario {
             this.square.x + this.square.w > this.cube.x &&
             this.square.y < this.cube.y + this.cube.h &&
             this.square.y + this.square.h > this.cube.y) {
-            if (this.sounds.soundAou) {
-                this.sounds.soundAou.volume = 1.0
-                this.sounds.soundAou.currentTime = 0
-                this.sounds.soundAou.play()
-            }
+            this.sounds.soundAou.currentTime = 0
+            this.sounds.soundAou.play()
             this.square.color = "red"
             this.score -= 1
         }
@@ -219,92 +291,46 @@ export class Mario {
             return
         }
 
-        this.skyCell.rect(this.sky.x * app.screen.width,
-            this.sky.y * app.screen.height,
-            this.sky.w * app.screen.width,
-            this.sky.h * app.screen.height
-        );
-        this.skyCell.fill(this.sky.color);
-        this.container.addChild(this.skyCell);
-
-        this.groundCell.rect(this.ground.x * app.screen.width,
-            this.ground.y * app.screen.height,
-            this.ground.w * app.screen.width,
-            this.ground.h * app.screen.height
-        );
-        this.groundCell.fill(this.ground.color);
-        this.container.addChild(this.groundCell);
-
         if (this.spriteMario) {
-            const rectangle = new Rectangle(
-                this.spriteLocationMarioActual.x,
-                this.spriteLocationMarioActual.y,
-                this.spriteLocationMarioActual.w,
-                this.spriteLocationMarioActual.h
-            );
-            const croppedTexture = new Texture({
-                source: this.marioTexture.source,
-                frame: rectangle
-            });
-            this.spriteMario.texture = croppedTexture;
+            if (this.squareState === "onGround") {
+                this.spriteMario.texture = this.marioIdleTexture;
+            }
+            else if (this.squareState === "jumping" || this.squareState === "fallingDown") {
+                this.spriteMario.texture = this.marioJumpTexture;
+            }
             this.spriteMario.x = this.square.x * app.screen.width
             this.spriteMario.y = this.square.y * app.screen.height
-            this.spriteMario.width = this.square.w * app.screen.width
-            this.spriteMario.height = this.square.h * app.screen.height
-            this.container.addChild(this.spriteMario);
         }
         else {
             this.squareCell.clear()
-            this.squareCell.rect(this.square.x * app.screen.width,
+            this.squareCell.rect(
+                this.square.x * app.screen.width,
                 this.square.y * app.screen.height,
                 this.square.w * app.screen.width,
                 this.square.h * app.screen.height
             );
             this.squareCell.fill(this.square.color);
-            this.container.addChild(this.squareCell);
         }
 
         if (this.spriteKoopa) {
-            const rectangle = new Rectangle(
-                this.spriteLocationKoopaActual.x,
-                this.spriteLocationKoopaActual.y,
-                this.spriteLocationKoopaActual.w,
-                this.spriteLocationKoopaActual.h
-            );
-            const croppedTexture = new Texture({
-                source: this.koopaTexture.source,
-                frame: rectangle
-            });
-            this.spriteKoopa.texture = croppedTexture;
             this.spriteKoopa.x = this.cube.x * app.screen.width
             this.spriteKoopa.y = this.cube.y * app.screen.height
-            this.spriteKoopa.width = this.cube.w * app.screen.width
-            this.spriteKoopa.height = this.cube.h * app.screen.height
-            this.container.addChild(this.spriteKoopa);
         }
         else {
             this.cubeCell.clear()
-            this.cubeCell.rect(this.cube.x * app.screen.width,
+            this.cubeCell.rect(
+                this.cube.x * app.screen.width,
                 this.cube.y * app.screen.height,
                 this.cube.w * app.screen.width,
                 this.cube.h * app.screen.height
             );
             this.cubeCell.fill(this.cube.color);
-            this.container.addChild(this.cubeCell);
         }
 
-        const text = new Text({
-            text: "score: " + this.score,
-            style: {
-                fontFamily: 'Arial',
-                fontSize: 24,
-                fill: 0xffffff, // white color
-                align: 'center'
-            }
-        })
-        text.x = 25
-        text.y = 25
-        this.container.addChild(text)
+        if (this.previousScore !== this.score) {
+            this.previousScore = this.score
+            this.text.text = `score: ${this.score}`
+        }
 
     }
 
