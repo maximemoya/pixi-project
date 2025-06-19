@@ -1,4 +1,5 @@
 import { Application, Container, Graphics } from "pixi.js";
+import { Mario } from "./Mario";
 
 export class Core {
 
@@ -33,7 +34,10 @@ export class Core {
 
     private selectedCell: { row: number, col: number } | null = null
 
-    constructor() {
+    private sounds: { soundJump: HTMLAudioElement, soundBip: HTMLAudioElement, soundAou: HTMLAudioElement }
+
+    constructor(sounds: { soundJump: HTMLAudioElement, soundBip: HTMLAudioElement, soundAou: HTMLAudioElement }) {
+        this.sounds = sounds
         this.app = new Application();
         (async () => { this.init() })()
     }
@@ -44,26 +48,21 @@ export class Core {
         await this.app.init({ background: "#1099bb", resizeTo: container });
         container?.appendChild(this.app.canvas)
 
-        // Forcer le canvas à prendre exactement la taille de la fenêtre
-        // this.app.canvas.style.position = 'absolute';
-        // this.app.canvas.style.top = '0';
-        // this.app.canvas.style.left = '0';
-        // this.app.canvas.style.width = '100vw';
-        // this.app.canvas.style.height = '80vh';
-        // this.app.canvas.style.display = 'block';
         this.updateGridForOrientation();
-
-        // Create container for grid - use this.gridContainer
-        this.gridContainer = new Container();
-        this.app.stage.addChild(this.gridContainer);
 
         // Add resize event listener
         this.app.renderer.on('resize', () => {
             this.onResize();
         });
 
+        // Create container for grid - use this.gridContainer
+        this.gridContainer = new Container();
+        this.app.stage.addChild(this.gridContainer);
+
+        new Mario({ value: this.gridContainer }, this.app, this.sounds)
+
         // Call renderGrid() AFTER creating gridContainer
-        this.renderGrid();
+        // this.renderGrid();
 
     }
 
