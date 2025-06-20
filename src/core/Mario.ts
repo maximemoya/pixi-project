@@ -4,13 +4,30 @@ export class Mario {
 
     // ------------------------------------------
 
-    public sky = { x: 0.0, y: 0.0, w: 1.0, h: 0.9, color: "#acbebf" }
+    public sky = { x: -0.5, y: 0.0, w: 1.5, h: 0.9, color: "#acbebf" }
+    public sky2 = { x: 1.0, y: 0.0, w: 1.5, h: 0.9, color: "#acbebf" }
     public skyCell = new Graphics()
 
     // ------------------------------------------
 
-    public ground = { x: 0.0, y: 0.9, w: 1.0, h: 0.1, color: "brown" }
+    public spriteSheetSky: HTMLImageElement | null = null
+    public spriteSky: Sprite | null = null
+    public spriteSky2: Sprite | null = null
+    private readonly spriteLocationSky = { x: 0, y: 16, w: 256, h: 208 }
+
+    // ------------------------------------------
+
+    public ground = { x: -0.5, y: 0.9, w: 1.5, h: 0.1, color: "brown" }
+    public ground2 = { x: 1.0, y: 0.9, w: 1.5, h: 0.1, color: "brown" }
     public groundCell = new Graphics();
+
+    // ------------------------------------------
+
+    public spriteSheetGround: HTMLImageElement | null = null
+    public spriteGround: Sprite | null = null
+    public spriteGround2: Sprite | null = null
+    private readonly spriteLocationGround = { x: 0, y: 224, w: 256, h: 32 }
+
 
     // ------------------------------------------
 
@@ -118,7 +135,7 @@ export class Mario {
 
         this.text.x = 25
         this.text.y = 25
-        this.text.zIndex = 2
+        this.text.zIndex = 7
 
         this.skyCell.cacheAsTexture(true);
         this.skyCell.zIndex = 1
@@ -142,6 +159,73 @@ export class Mario {
 
         this.container.addChild(this.skyCell, this.groundCell, this.text);
 
+        Assets.load("./assets/land-spritesheet-alpha.png").then(
+            (texture) => {
+
+                let rectangle = new Rectangle(
+                    this.spriteLocationSky.x,
+                    this.spriteLocationSky.y,
+                    this.spriteLocationSky.w,
+                    this.spriteLocationSky.h
+                );
+                const skyTexture = new Texture({
+                    source: texture.source,
+                    frame: rectangle
+                });
+
+                this.spriteSky = new Sprite(skyTexture);
+                this.spriteSky.x = this.sky.x * app.screen.width
+                this.spriteSky.y = this.sky.y * app.screen.height
+                this.spriteSky.width = this.sky.w * app.screen.width
+                this.spriteSky.height = this.sky.h * app.screen.height
+                this.spriteSky.visible = true;
+                this.spriteSky.zIndex = 5
+
+                this.spriteSky2 = new Sprite(skyTexture);
+                this.spriteSky2.x = this.sky2.x * app.screen.width
+                this.spriteSky2.y = this.sky2.y * app.screen.height
+                this.spriteSky2.width = this.sky2.w * app.screen.width
+                this.spriteSky2.height = this.sky2.h * app.screen.height
+                this.spriteSky2.visible = true;
+                this.spriteSky2.zIndex = 5
+
+                this.container.addChild(this.spriteSky)
+                this.container.addChild(this.spriteSky2)
+                this.container.removeChild(this.skyCell)
+
+                rectangle = new Rectangle(
+                    this.spriteLocationGround.x,
+                    this.spriteLocationGround.y,
+                    this.spriteLocationGround.w,
+                    this.spriteLocationGround.h
+                );
+                const groundTexture = new Texture({
+                    source: texture.source,
+                    frame: rectangle
+                });
+
+                this.spriteGround = new Sprite(groundTexture);
+                this.spriteGround.x = this.ground.x * app.screen.width
+                this.spriteGround.y = this.ground.y * app.screen.height
+                this.spriteGround.width = this.ground.w * app.screen.width
+                this.spriteGround.height = this.ground.h * app.screen.height
+                this.spriteGround.visible = true;
+                this.spriteGround.zIndex = 6
+
+                this.spriteGround2 = new Sprite(groundTexture);
+                this.spriteGround2.x = this.ground2.x * app.screen.width
+                this.spriteGround2.y = this.ground2.y * app.screen.height
+                this.spriteGround2.width = this.ground2.w * app.screen.width
+                this.spriteGround2.height = this.ground2.h * app.screen.height
+                this.spriteGround2.visible = true;
+                this.spriteGround2.zIndex = 6
+
+                this.container.addChild(this.spriteGround)
+                this.container.addChild(this.spriteGround2)
+                this.container.removeChild(this.groundCell)
+
+            }
+        )
         Assets.load("./assets/mario-spritesheet-alpha.png").then(
             (texture) => {
 
@@ -284,8 +368,6 @@ export class Mario {
                 });
 
                 this.spriteCoin = new Sprite(this.spriteCoinTextures[this.spriteCoinTextureIndex]);
-                // this.spriteCoin.tint = 0xA3E2FB
-                // this.spriteCoin.alpha = 0.8
                 this.spriteCoin.width = this.coin.w * app.screen.width
                 this.spriteCoin.height = this.coin.h * app.screen.height
                 this.spriteCoin.visible = true;
@@ -301,6 +383,7 @@ export class Mario {
         ticker.minFPS = 20
         ticker.maxFPS = 30
         ticker.add(() => {
+            this.landAction()
             this.playerAction()
             this.shellAction()
             this.coinAction()
@@ -342,15 +425,27 @@ export class Mario {
         })
         ticker2.start()
 
-        // app.ticker.minFPS = 20
-        // app.ticker.maxFPS = 30
-        // app.ticker.add(() => {
-        //     this.squareAction()
-        //     this.cubeAction()
-        //     this.interactionBetweenSquareAndCube()
-        //     this.render(app)
-        // })
+    }
 
+    // ------------------------------------------
+
+    private landAction() {
+        this.ground.x -= 0.01
+        this.ground2.x -= 0.01
+        if (this.ground.x < -this.ground.w) {
+            this.ground.x = this.ground2.x + this.ground2.w
+        }
+        if (this.ground2.x < -this.ground2.w) {
+            this.ground2.x = this.ground.x + this.ground.w
+        }
+        this.sky.x -= 0.005
+        this.sky2.x -= 0.005
+        if (this.sky.x < -this.sky.w) {
+            this.sky.x = this.sky2.x + this.sky2.w
+        }
+        if (this.sky2.x < -this.sky2.w) {
+            this.sky2.x = this.sky.x + this.sky.w
+        }
     }
 
     // ------------------------------------------
@@ -495,6 +590,26 @@ export class Mario {
 
         if (!this.container) {
             return
+        }
+
+        if (this.spriteSky && this.spriteSky2) {
+
+            this.spriteSky.x = this.sky.x * app.screen.width
+            this.spriteSky.y = this.sky.y * app.screen.height
+
+            this.spriteSky2.x = this.sky2.x * app.screen.width
+            this.spriteSky2.y = this.sky2.y * app.screen.height
+
+        }
+
+        if (this.spriteGround && this.spriteGround2) {
+
+            this.spriteGround.x = this.ground.x * app.screen.width
+            this.spriteGround.y = this.ground.y * app.screen.height
+
+            this.spriteGround2.x = this.ground2.x * app.screen.width
+            this.spriteGround2.y = this.ground2.y * app.screen.height
+
         }
 
         if (this.spriteMario) {

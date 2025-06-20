@@ -63,7 +63,7 @@ function loadAudio() {
     audioElementMusic.loop = false;
     audioElementMusic.muted = false;
     audioElementMusic.preload = 'auto';
-    audioElementMusic.src = './assets/mario2-theme.mp3';
+    audioElementMusic.src = './assets/mario2-theme-V1.mp3';
     audioElementMusic.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementMusic);
     music = audioElementMusic
