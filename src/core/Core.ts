@@ -45,6 +45,11 @@ export class Core {
     async init() {
 
         const container = document.getElementById("pixi-container");
+
+        if (window.matchMedia("(orientation: landscape)").matches) {
+            container.style.width = "50vw"
+        }
+
         await this.app.init({ background: "#1099bb", resizeTo: container });
         container?.appendChild(this.app.canvas)
 

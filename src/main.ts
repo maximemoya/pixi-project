@@ -60,7 +60,7 @@ function loadAudio() {
     audioElementMusic.id = "musicSound"
     audioElementMusic.controls = false;
     audioElementMusic.autoplay = false;
-    audioElementMusic.loop = true;
+    audioElementMusic.loop = false;
     audioElementMusic.muted = false;
     audioElementMusic.preload = 'auto';
     audioElementMusic.src = './assets/mario2-theme.mp3';
@@ -94,7 +94,8 @@ fullscreenButton.addEventListener('click', () => {
     soundBip.play()
     soundAou.volume = 0.0
     soundAou.play()
-    music.volume = 0.5
+    music.loop = true
+    music.volume = 0.3
     music.play()
     new Core({ soundJump, soundBip, soundAou });
 });
