@@ -17,6 +17,7 @@ function requestFullscreen() {
 let soundJump: HTMLAudioElement | null = null
 let soundBip: HTMLAudioElement | null = null
 let soundAou: HTMLAudioElement | null = null
+let music: HTMLAudioElement | null = null
 function loadAudio() {
 
     const audioElementJump: HTMLAudioElement = document.createElement('audio');
@@ -55,6 +56,18 @@ function loadAudio() {
     document.body.appendChild(audioElementBip);
     soundBip = audioElementBip
 
+    const audioElementMusic: HTMLAudioElement = document.createElement('audio');
+    audioElementMusic.id = "musicSound"
+    audioElementMusic.controls = false;
+    audioElementMusic.autoplay = false;
+    audioElementMusic.loop = true;
+    audioElementMusic.muted = false;
+    audioElementMusic.preload = 'auto';
+    audioElementMusic.src = './assets/mario2-theme.mp3';
+    audioElementMusic.innerHTML += 'Your browser does not support the audio element.';
+    document.body.appendChild(audioElementMusic);
+    music = audioElementMusic
+
 }
 
 // Créer un bouton Jouer
@@ -81,6 +94,8 @@ fullscreenButton.addEventListener('click', () => {
     soundBip.play()
     soundAou.volume = 0.0
     soundAou.play()
+    music.volume = 0.5
+    music.play()
     new Core({ soundJump, soundBip, soundAou });
 });
 

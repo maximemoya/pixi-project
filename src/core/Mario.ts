@@ -29,9 +29,9 @@ export class Mario {
     private readonly spriteLocationMarioIdle1 = { x: 3, y: 9, w: 17, h: 31 }
     private readonly spriteLocationMarioIdle2 = { x: 23, y: 9, w: 17, h: 31 }
     private readonly spriteLocationMarioJump = { x: 63, y: 9, w: 17, h: 31 }
-    public marioIdleTextureIndex = 0
-    public marioIdleTextures: Texture[] = []
-    public marioJumpTexture: Texture | null = null
+    public spriteMarioIdleTextureIndex = 0
+    public spriteMarioIdleTextures: Texture[] = []
+    public spriteMarioJumpTexture: Texture | null = null
 
     // ------------------------------------------
 
@@ -45,7 +45,12 @@ export class Mario {
 
     public spriteSheetKoopa: HTMLImageElement | null = null
     public spriteKoopa: Sprite | null = null
-    private readonly spriteLocationKoopaIdle = { x: 1, y: 1, w: 16, h: 16 }
+    private readonly spriteLocationKoopaMoving1 = { x: 1, y: 1, w: 16, h: 16 }
+    private readonly spriteLocationKoopaMoving2 = { x: 18, y: 1, w: 16, h: 16 }
+    private readonly spriteLocationKoopaMoving3 = { x: 35, y: 1, w: 16, h: 16 }
+    private readonly spriteLocationKoopaMoving4 = { x: 52, y: 1, w: 16, h: 16 }
+    public spriteKoopaMovingTextureIndex = 0
+    public spriteKoopaMovingTextures: Texture[] = []
 
     // ------------------------------------------
 
@@ -146,7 +151,7 @@ export class Mario {
                     this.spriteLocationMarioIdle1.w,
                     this.spriteLocationMarioIdle1.h
                 );
-                this.marioIdleTextures[0] = new Texture({
+                this.spriteMarioIdleTextures[0] = new Texture({
                     source: texture.source,
                     frame: rectangle
                 });
@@ -157,7 +162,7 @@ export class Mario {
                     this.spriteLocationMarioIdle2.w,
                     this.spriteLocationMarioIdle2.h
                 );
-                this.marioIdleTextures[1] = new Texture({
+                this.spriteMarioIdleTextures[1] = new Texture({
                     source: texture.source,
                     frame: rectangle
                 });
@@ -168,12 +173,12 @@ export class Mario {
                     this.spriteLocationMarioJump.w,
                     this.spriteLocationMarioJump.h
                 );
-                this.marioJumpTexture = new Texture({
+                this.spriteMarioJumpTexture = new Texture({
                     source: texture.source,
                     frame: rectangle
                 });
 
-                this.spriteMario = new Sprite(this.marioIdleTextures[0]);
+                this.spriteMario = new Sprite(this.spriteMarioIdleTextures[0]);
                 this.spriteMario.width = this.player.w * app.screen.width
                 this.spriteMario.height = this.player.h * app.screen.height
                 this.spriteMario.visible = true;
@@ -187,18 +192,51 @@ export class Mario {
         Assets.load("./assets/koopa-spritesheet-alpha.png").then(
             (texture) => {
 
-                const rectangle = new Rectangle(
-                    this.spriteLocationKoopaIdle.x,
-                    this.spriteLocationKoopaIdle.y,
-                    this.spriteLocationKoopaIdle.w,
-                    this.spriteLocationKoopaIdle.h
+                let rectangle = new Rectangle(
+                    this.spriteLocationKoopaMoving1.x,
+                    this.spriteLocationKoopaMoving1.y,
+                    this.spriteLocationKoopaMoving1.w,
+                    this.spriteLocationKoopaMoving1.h
                 );
-                const croppedTexture = new Texture({
+                this.spriteKoopaMovingTextures[0] = new Texture({
                     source: texture.source,
                     frame: rectangle
                 });
 
-                this.spriteKoopa = new Sprite(croppedTexture);
+                rectangle = new Rectangle(
+                    this.spriteLocationKoopaMoving2.x,
+                    this.spriteLocationKoopaMoving2.y,
+                    this.spriteLocationKoopaMoving2.w,
+                    this.spriteLocationKoopaMoving2.h
+                );
+                this.spriteKoopaMovingTextures[1] = new Texture({
+                    source: texture.source,
+                    frame: rectangle
+                });
+
+                rectangle = new Rectangle(
+                    this.spriteLocationKoopaMoving3.x,
+                    this.spriteLocationKoopaMoving3.y,
+                    this.spriteLocationKoopaMoving3.w,
+                    this.spriteLocationKoopaMoving3.h
+                );
+                this.spriteKoopaMovingTextures[2] = new Texture({
+                    source: texture.source,
+                    frame: rectangle
+                });
+
+                rectangle = new Rectangle(
+                    this.spriteLocationKoopaMoving4.x,
+                    this.spriteLocationKoopaMoving4.y,
+                    this.spriteLocationKoopaMoving4.w,
+                    this.spriteLocationKoopaMoving4.h
+                );
+                this.spriteKoopaMovingTextures[3] = new Texture({
+                    source: texture.source,
+                    frame: rectangle
+                });
+
+                this.spriteKoopa = new Sprite(this.spriteKoopaMovingTextures[0]);
                 this.spriteKoopa.width = this.shell.w * app.screen.width
                 this.spriteKoopa.height = this.shell.h * app.screen.height
                 this.spriteKoopa.visible = true;
@@ -278,11 +316,19 @@ export class Mario {
         ticker2.add(() => {
 
             // mario
-            if (this.marioIdleTextureIndex + 1 < this.marioIdleTextures.length) {
-                this.marioIdleTextureIndex++
+            if (this.spriteMarioIdleTextureIndex + 1 < this.spriteMarioIdleTextures.length) {
+                this.spriteMarioIdleTextureIndex++
             }
             else {
-                this.marioIdleTextureIndex = 0
+                this.spriteMarioIdleTextureIndex = 0
+            }
+
+            // koopa
+            if (this.spriteKoopaMovingTextureIndex + 1 < this.spriteKoopaMovingTextures.length) {
+                this.spriteKoopaMovingTextureIndex++
+            }
+            else {
+                this.spriteKoopaMovingTextureIndex = 0
             }
 
             // coin
@@ -453,10 +499,10 @@ export class Mario {
 
         if (this.spriteMario) {
             if (this.playerState === "onGround") {
-                this.spriteMario.texture = this.marioIdleTextures[this.marioIdleTextureIndex];
+                this.spriteMario.texture = this.spriteMarioIdleTextures[this.spriteMarioIdleTextureIndex];
             }
             else if (this.playerState === "jumping" || this.playerState === "fallingDown") {
-                this.spriteMario.texture = this.marioJumpTexture;
+                this.spriteMario.texture = this.spriteMarioJumpTexture;
             }
             this.spriteMario.x = this.player.x * app.screen.width
             this.spriteMario.y = this.player.y * app.screen.height
@@ -473,6 +519,7 @@ export class Mario {
         }
 
         if (this.spriteKoopa) {
+            this.spriteKoopa.texture = this.spriteKoopaMovingTextures[this.spriteCoinTextureIndex]
             this.spriteKoopa.x = this.shell.x * app.screen.width
             this.spriteKoopa.y = this.shell.y * app.screen.height
         }
