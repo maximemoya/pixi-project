@@ -1,24 +1,13 @@
 import { Core } from "./core/Core";
 
-// Fonction pour demander le plein écran
-function requestFullscreen() {
-    const element: any = document.documentElement;
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) { // Safari
-        element.webkitRequestFullscreen();
-    } else if (element.mozRequestFullScreen) { // Firefox
-        element.mozRequestFullScreen();
-    } else if (element.msRequestFullscreen) { // IE/Edge
-        element.msRequestFullscreen();
-    }
-}
+document.body.appendChild(createStartButton(loadSounds()));
 
-let soundJump: HTMLAudioElement | null = null
-let soundBip: HTMLAudioElement | null = null
-let soundAou: HTMLAudioElement | null = null
-let music: HTMLAudioElement | null = null
-function loadAudio() {
+// -----------------------------------------------------------
+
+type SoundsLoaded = { soundJump: HTMLAudioElement, soundAou: HTMLAudioElement, soundBip: HTMLAudioElement, music: HTMLAudioElement }
+
+
+function loadSounds(): SoundsLoaded {
 
     const audioElementJump: HTMLAudioElement = document.createElement('audio');
     audioElementJump.id = "jumpSound"
@@ -30,7 +19,6 @@ function loadAudio() {
     audioElementJump.src = './assets/yop.mp3';
     audioElementJump.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementJump);
-    soundJump = audioElementJump
 
     const audioElementAou: HTMLAudioElement = document.createElement('audio');
     audioElementAou.id = "aouSound"
@@ -42,7 +30,6 @@ function loadAudio() {
     audioElementAou.src = './assets/aou.mp3';
     audioElementAou.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementAou);
-    soundAou = audioElementAou
 
     const audioElementBip: HTMLAudioElement = document.createElement('audio');
     audioElementBip.id = "bipSound"
@@ -54,7 +41,6 @@ function loadAudio() {
     audioElementBip.src = './assets/bip.mp3';
     audioElementBip.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementBip);
-    soundBip = audioElementBip
 
     const audioElementMusic: HTMLAudioElement = document.createElement('audio');
     audioElementMusic.id = "musicSound"
@@ -66,39 +52,41 @@ function loadAudio() {
     audioElementMusic.src = './assets/mario2-theme-V1.mp3';
     audioElementMusic.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementMusic);
-    music = audioElementMusic
+
+    return { soundJump: audioElementJump, soundAou: audioElementAou, soundBip: audioElementBip, music: audioElementMusic }
 
 }
 
-// Créer un bouton Jouer
-const fullscreenButton = document.createElement('button');
-fullscreenButton.innerText = 'Jouer';
-fullscreenButton.style.position = 'fixed';
-fullscreenButton.style.top = '50%';
-fullscreenButton.style.left = '50%';
-fullscreenButton.style.transform = 'translate(-50%, -50%)';
-fullscreenButton.style.zIndex = '1000';
-fullscreenButton.style.padding = '40px 80px';
-fullscreenButton.style.fontSize = '48px';
-fullscreenButton.style.backgroundColor = '#007acc';
-fullscreenButton.style.color = 'white';
-fullscreenButton.style.border = 'none';
-fullscreenButton.style.borderRadius = '20px';
-fullscreenButton.style.cursor = 'pointer';
-fullscreenButton.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
+function createStartButton(soundsLoaded: SoundsLoaded): HTMLButtonElement {
 
-fullscreenButton.addEventListener('click', () => {
-    // requestFullscreen();
-    fullscreenButton.style.display = 'none'; // Cacher le bouton après activation
-    soundBip.volume = 0.0
-    soundBip.play()
-    soundAou.volume = 0.0
-    soundAou.play()
-    music.loop = true
-    music.volume = 0.3
-    music.play()
-    new Core({ soundJump, soundBip, soundAou });
-});
+    const fullscreenButton = document.createElement('button');
+    fullscreenButton.innerText = 'Jouer';
+    fullscreenButton.style.position = 'fixed';
+    fullscreenButton.style.top = '50%';
+    fullscreenButton.style.left = '50%';
+    fullscreenButton.style.transform = 'translate(-50%, -50%)';
+    fullscreenButton.style.zIndex = '1000';
+    fullscreenButton.style.padding = '40px 80px';
+    fullscreenButton.style.fontSize = '48px';
+    fullscreenButton.style.backgroundColor = '#007acc';
+    fullscreenButton.style.color = 'white';
+    fullscreenButton.style.border = 'none';
+    fullscreenButton.style.borderRadius = '20px';
+    fullscreenButton.style.cursor = 'pointer';
+    fullscreenButton.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
 
-loadAudio()
-document.body.appendChild(fullscreenButton);
+    fullscreenButton.addEventListener('click', () => {
+        fullscreenButton.style.display = 'none'; // Cacher le bouton après activation
+        soundsLoaded.soundBip.volume = 0.0
+        soundsLoaded.soundBip.play()
+        soundsLoaded.soundAou.volume = 0.0
+        soundsLoaded.soundAou.play()
+        soundsLoaded.music.loop = true
+        soundsLoaded.music.volume = 0.3
+        soundsLoaded.music.play()
+        new Core(soundsLoaded);
+    });
+
+    return fullscreenButton
+
+}
