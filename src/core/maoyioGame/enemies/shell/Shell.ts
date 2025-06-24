@@ -1,4 +1,9 @@
+import { Container } from "pixi.js"
+import { ShellImageLoader } from "./image/ShellImageLoader"
+
 export class Shell {
+
+    // -----------------------------------------
 
     public x = 2.5
     public y = 0.8
@@ -8,6 +13,23 @@ export class Shell {
     public shellState: "movingLeft" | "movingRight" = "movingLeft"
     public shellSpeedX = 0.03
     public shellSpeedXMax = 0.05
+
+    public image: ShellImageLoader
+
+    // -----------------------------------------
+
+    constructor(container: Container, getWidthScreen: () => number, getHeightScreen: () => number) {
+        this.image = new ShellImageLoader(
+            {
+                shell: this,
+                container,
+                getWidthScreen,
+                getHeightScreen
+            }
+        )
+    }
+
+    // -----------------------------------------
 
     public shellAction() {
         if (this.x <= (0.0 - this.w)) {
@@ -49,5 +71,7 @@ export class Shell {
     public shellReset() {
         this.x = 1.5 + Math.random() * 4
     }
+
+    // -----------------------------------------
 
 }

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 export class TextService {
+
     private app: PIXI.Application;
 
     constructor(app: PIXI.Application) {

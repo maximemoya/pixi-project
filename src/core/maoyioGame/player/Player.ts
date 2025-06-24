@@ -1,4 +1,6 @@
-import { Coin } from "../Coin/Coin"
+import { Container } from "pixi.js"
+import { Coin } from "../coin/Coin"
+import { PlayerImageLoader } from "./PlayerImageLoader"
 
 export class Player {
 
@@ -11,14 +13,23 @@ export class Player {
     public color = "black"
     public playerState: "onGround" | "jumping" | "fallingDown" = "onGround"
     public jumpMaxValue = 0.35
-    public jumpStep = 0.04
+    public jumpStep = 0.035
     private jumpValue = 0.0
     private initialYPosBeforeJump = this.y
 
+    public image: PlayerImageLoader
+
     // -----------------------------------------
 
-    constructor() {
-
+    constructor(container: Container, getWidthScreen: () => number, getHeightScreen: () => number) {
+        this.image = new PlayerImageLoader(
+            {
+                player: this,
+                container,
+                getWidthScreen,
+                getHeightScreen
+            }
+        )
     }
 
     // -----------------------------------------
