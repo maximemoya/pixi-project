@@ -5,12 +5,12 @@ export class Player {
     // -----------------------------------------
 
     public x = 0.2
-    public y = 0.7
-    public w = 0.125
-    public h = 0.2
+    public y = 0.6
+    public w = 0.2
+    public h = 0.3
     public color = "black"
     public playerState: "onGround" | "jumping" | "fallingDown" = "onGround"
-    public jumpMaxValue = 0.3
+    public jumpMaxValue = 0.35
     public jumpStep = 0.04
     private jumpValue = 0.0
     private initialYPosBeforeJump = this.y

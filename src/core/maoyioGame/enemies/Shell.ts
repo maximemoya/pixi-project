@@ -1,9 +1,9 @@
 export class Shell {
 
     public x = 2.5
-    public y = 0.825
+    public y = 0.8
     public w = 0.1
-    public h = 0.075
+    public h = 0.1
     public color = "green"
     public shellState: "movingLeft" | "movingRight" = "movingLeft"
     public shellSpeedX = 0.03

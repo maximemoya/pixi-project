@@ -1,8 +1,9 @@
-import { Application, Assets, Container, Graphics, Rectangle, Sprite, Text, Texture, Ticker } from "pixi.js"
-import { AssetsImageLoader } from "./pixiService/AssetsImageLoader"
+import { Application, Assets, Container, FillGradient, Graphics, Rectangle, Sprite, Text, Texture, Ticker } from "pixi.js"
 import { Player } from "./player/Player"
 import { Coin } from "./Coin/Coin"
 import { Shell } from "./enemies/Shell"
+import { SellerImageLoader } from "./pixiService/sellerImageLoader/SellerImageLoader"
+import { TextService } from "./pixiService/textService/TextService"
 
 type Sounds = { soundJump: HTMLAudioElement, soundBip: HTMLAudioElement, soundAou: HTMLAudioElement }
 
@@ -18,7 +19,10 @@ export class MaoYio {
 
     public spriteSky: Sprite | null = null
     public spriteSky2: Sprite | null = null
-    private readonly spriteLocationSky = { x: 0, y: 16, w: 256, h: 208 }
+    // private readonly skyPath = "./assets/land-spritesheet-alpha.png"
+    // private readonly spriteLocationSky = { x: 0, y: 16, w: 256, h: 208 }
+    private readonly skyPath = "./assets/sky-A0-256.png"
+    private readonly spriteLocationSky = { x: 0, y: 0, w: 256, h: 210 }
 
     // ------------------------------------------
 
@@ -30,7 +34,10 @@ export class MaoYio {
 
     public spriteGround: Sprite | null = null
     public spriteGround2: Sprite | null = null
-    private readonly spriteLocationGround = { x: 0, y: 224, w: 256, h: 32 }
+    // private readonly groundPath = "./assets/land-spritesheet-alpha.png"
+    // private readonly spriteLocationGround = { x: 0, y: 224, w: 256, h: 32 }
+    private readonly groundPath = "./assets/ground-A0-256.png"
+    private readonly spriteLocationGround = { x: 0, y: 0, w: 256, h: 32 }
 
 
     // ------------------------------------------
@@ -41,9 +48,14 @@ export class MaoYio {
     // ------------------------------------------
 
     public spriteMario: Sprite | null = null
-    private readonly spriteLocationMarioIdle1 = { x: 3, y: 9, w: 17, h: 31 }
-    private readonly spriteLocationMarioIdle2 = { x: 23, y: 9, w: 17, h: 31 }
-    private readonly spriteLocationMarioJump = { x: 63, y: 9, w: 17, h: 31 }
+    // private readonly marioPath = "./assets/mario-spritesheet-alpha.png"
+    // private readonly spriteLocationMarioIdle1 = { x: 3, y: 9, w: 17, h: 31 }
+    // private readonly spriteLocationMarioIdle2 = { x: 23, y: 9, w: 17, h: 31 }
+    // private readonly spriteLocationMarioJump = { x: 63, y: 9, w: 17, h: 31 }
+    private readonly marioPath = "./assets/main-character-A0-64.png"
+    private readonly spriteLocationMarioIdle1 = { x: 0, y: 0, w: 64, h: 64 }
+    private readonly spriteLocationMarioIdle2 = { x: 64, y: 0, w: 64, h: 64 }
+    private readonly spriteLocationMarioJump = { x: 128, y: 0, w: 64, h: 64 }
     public spriteMarioIdleTextureIndex = 0
     public spriteMarioIdleTextures: Texture[] = []
     public spriteMarioJumpTexture: Texture | null = null
@@ -56,10 +68,16 @@ export class MaoYio {
     // ------------------------------------------
 
     public spriteKoopa: Sprite | null = null
-    private readonly spriteLocationKoopaMoving1 = { x: 1, y: 1, w: 16, h: 16 }
-    private readonly spriteLocationKoopaMoving2 = { x: 18, y: 1, w: 16, h: 16 }
-    private readonly spriteLocationKoopaMoving3 = { x: 35, y: 1, w: 16, h: 16 }
-    private readonly spriteLocationKoopaMoving4 = { x: 52, y: 1, w: 16, h: 16 }
+    // private readonly koopaPath = "./assets/koopa-spritesheet-alpha.png"
+    // private readonly spriteLocationKoopaMoving1 = { x: 1, y: 1, w: 16, h: 16 }
+    // private readonly spriteLocationKoopaMoving2 = { x: 18, y: 1, w: 16, h: 16 }
+    // private readonly spriteLocationKoopaMoving3 = { x: 35, y: 1, w: 16, h: 16 }
+    // private readonly spriteLocationKoopaMoving4 = { x: 52, y: 1, w: 16, h: 16 }
+    private readonly koopaPath = "./assets/ennemi-A0-64.png"
+    private readonly spriteLocationKoopaMoving1 = { x: 0, y: 0, w: 64, h: 64 }
+    private readonly spriteLocationKoopaMoving2 = { x: 64, y: 0, w: 64, h: 64 }
+    private readonly spriteLocationKoopaMoving3 = { x: 128, y: 0, w: 64, h: 64 }
+    private readonly spriteLocationKoopaMoving4 = { x: 196, y: 0, w: 64, h: 64 }
     public spriteKoopaMovingTextureIndex = 0
     public spriteKoopaMovingTextures: Texture[] = []
 
@@ -81,14 +99,52 @@ export class MaoYio {
 
     public previousScore = 0
     public score = { value: 0 }
-    public text: Text = new Text({
-        text: "score: " + this.score.value,
+    public scoreTextContainer: Text = new Text({
+        text: this.score.value + " $",
         style: {
             fontFamily: 'Arial',
-            fontSize: 24,
-            fill: 0xffffff, // white color
+            fontSize: 32,
+            fill: new FillGradient({
+                end: { x: 1, y: 1 },
+                colorStops: [
+                    { offset: 0, color: 0x00ff00 },
+                    { offset: 1, color: 0x0000ff }
+                ]
+            }),
+            stroke: { color: '#4a1850', width: 5 },
+            dropShadow: {
+                color: '#000000',
+                blur: 4,
+                distance: 6
+            },
             align: 'center'
-        }
+        },
+    })
+
+    // ------------------------------------------
+
+    public distance = { value: 0 }
+    public shopDistance = { value: 5 }
+    public distanceTextContainer: Text = new Text({
+        text: this.distance.value + " m",
+        style: {
+            fontFamily: 'Arial',
+            fontSize: 32,
+            fill: new FillGradient({
+                end: { x: 1, y: 1 },
+                colorStops: [
+                    { offset: 0, color: 0x00ff00 },
+                    { offset: 1, color: 0x0000ff }
+                ]
+            }),
+            stroke: { color: '#4a1850', width: 5 },
+            dropShadow: {
+                color: '#000000',
+                blur: 4,
+                distance: 6
+            },
+            align: 'center'
+        },
     })
 
     // ------------------------------------------
@@ -99,17 +155,42 @@ export class MaoYio {
 
     // ------------------------------------------
 
-    constructor(container: Container, sounds: Sounds, app: Application) {
+    private ispaused = true
+    private texteState = 0
 
-        // TODO: AssetsImageLoader
-        new AssetsImageLoader(this.getWidthScreen, this.getHeightScreen)
+    // ------------------------------------------
+
+    private container: Container
+    private textService: TextService
+    private textContainer: Container
+
+    // ------------------------------------------
+
+    constructor(container: Container, sounds: Sounds, app: Application) {
 
         this.getWidthScreen = () => { return app.screen.width }
         this.getHeightScreen = () => { return app.screen.height }
+        this.container = container
+
+        container.removeChildren();
+
+        this.textService = new TextService(app);
+        this.textContainer = this.textService.createContinuePopup("Appuyer\npour\ncommencer", this.container)
 
         container.eventMode = "static"
-        container.removeChildren();
         container.onpointerdown = () => {
+            if (this.texteState === 0) {
+                this.textContainer.destroy(true)
+                this.ispaused = false
+                this.texteState = 1
+                return
+            }
+            else if (this.texteState === 2) {
+                this.textContainer.destroy(true)
+                this.ispaused = false
+                this.texteState = 3
+                return
+            }
             this.player.jump(sounds.soundJump)
         }
 
@@ -128,9 +209,13 @@ export class MaoYio {
         this.shellCell.zIndex = 10;
         container.addChild(this.shellCell);
 
-        this.text.x = 25
-        this.text.y = 25
-        this.text.zIndex = 7
+        this.scoreTextContainer.x = 25
+        this.scoreTextContainer.y = 25
+        this.scoreTextContainer.zIndex = 7
+
+        this.distanceTextContainer.x = 25
+        this.distanceTextContainer.y = 75
+        this.distanceTextContainer.zIndex = 7
 
         this.skyCell.cacheAsTexture(true);
         this.skyCell.zIndex = 1
@@ -152,12 +237,12 @@ export class MaoYio {
         );
         this.groundCell.fill(this.ground.color);
 
-        container.addChild(this.skyCell, this.groundCell, this.text);
+        container.addChild(this.skyCell, this.groundCell, this.scoreTextContainer, this.distanceTextContainer);
 
-        Assets.load("./assets/land-spritesheet-alpha.png").then(
+        Assets.load(this.skyPath).then(
             (texture) => {
 
-                let rectangle = new Rectangle(
+                const rectangle = new Rectangle(
                     this.spriteLocationSky.x,
                     this.spriteLocationSky.y,
                     this.spriteLocationSky.w,
@@ -188,7 +273,12 @@ export class MaoYio {
                 container.addChild(this.spriteSky2)
                 container.removeChild(this.skyCell)
 
-                rectangle = new Rectangle(
+            }
+        )
+        Assets.load(this.groundPath).then(
+            (texture) => {
+
+                const rectangle = new Rectangle(
                     this.spriteLocationGround.x,
                     this.spriteLocationGround.y,
                     this.spriteLocationGround.w,
@@ -221,7 +311,7 @@ export class MaoYio {
 
             }
         )
-        Assets.load("./assets/mario-spritesheet-alpha.png").then(
+        Assets.load(this.marioPath).then(
             (texture) => {
 
                 let rectangle = new Rectangle(
@@ -258,6 +348,8 @@ export class MaoYio {
                 });
 
                 this.spriteMario = new Sprite(this.spriteMarioIdleTextures[0]);
+                this.spriteMario.x = this.player.x * this.getWidthScreen()
+                this.spriteMario.y = this.player.y * this.getHeightScreen()
                 this.spriteMario.width = this.player.w * this.getWidthScreen()
                 this.spriteMario.height = this.player.h * this.getHeightScreen()
                 this.spriteMario.visible = true;
@@ -268,7 +360,7 @@ export class MaoYio {
 
             }
         )
-        Assets.load("./assets/koopa-spritesheet-alpha.png").then(
+        Assets.load(this.koopaPath).then(
             (texture) => {
 
                 let rectangle = new Rectangle(
@@ -316,6 +408,8 @@ export class MaoYio {
                 });
 
                 this.spriteKoopa = new Sprite(this.spriteKoopaMovingTextures[0]);
+                this.spriteKoopa.x = this.shell.x * this.getWidthScreen()
+                this.spriteKoopa.y = this.shell.y * this.getHeightScreen()
                 this.spriteKoopa.width = this.shell.w * this.getWidthScreen()
                 this.spriteKoopa.height = this.shell.h * this.getHeightScreen()
                 this.spriteKoopa.visible = true;
@@ -363,6 +457,8 @@ export class MaoYio {
                 });
 
                 this.spriteCoin = new Sprite(this.spriteCoinTextures[this.spriteCoinTextureIndex]);
+                this.spriteCoin.x = this.coin.x * this.getWidthScreen()
+                this.spriteCoin.y = this.coin.y * this.getHeightScreen()
                 this.spriteCoin.width = this.coin.w * this.getWidthScreen()
                 this.spriteCoin.height = this.coin.h * this.getHeightScreen()
                 this.spriteCoin.visible = true;
@@ -378,7 +474,11 @@ export class MaoYio {
         tickerRender.minFPS = 20
         tickerRender.maxFPS = 30
         tickerRender.add(() => {
+            if (this.ispaused) {
+                return
+            }
             this.landAction()
+            this.distanceAction()
             this.player.playerAction()
             this.shell.shellAction()
             this.coin.coinAction()
@@ -425,6 +525,7 @@ export class MaoYio {
     // ------------------------------------------
 
     private landAction() {
+
         this.ground.x -= 0.01
         this.ground2.x -= 0.01
         if (this.ground.x < -this.ground.w) {
@@ -433,6 +534,7 @@ export class MaoYio {
         if (this.ground2.x < -this.ground2.w) {
             this.ground2.x = this.ground.x + this.ground.w
         }
+
         this.sky.x -= 0.005
         this.sky2.x -= 0.005
         if (this.sky.x < -this.sky.w) {
@@ -440,6 +542,16 @@ export class MaoYio {
         }
         if (this.sky2.x < -this.sky2.w) {
             this.sky2.x = this.sky.x + this.sky.w
+        }
+
+    }
+
+    private distanceAction() {
+        this.distance.value += 0.025
+        if (this.distance.value >= this.shopDistance.value && this.texteState < 2) {
+            this.textContainer = this.textService.createContinuePopup("entrer\ndans le\ncommerce", this.container)
+            this.texteState = 2
+            this.ispaused = true
         }
     }
 
@@ -522,8 +634,10 @@ export class MaoYio {
 
         if (this.previousScore !== this.score.value) {
             this.previousScore = this.score.value
-            this.text.text = `score: ${this.score.value}`
+            this.scoreTextContainer.text = `${this.score.value} $`
         }
+
+        this.distanceTextContainer.text = `${this.distance.value.toFixed(1)} m`
 
     }
 
