@@ -4,7 +4,14 @@ document.body.appendChild(createStartButton(loadSounds()));
 
 // -----------------------------------------------------------
 
-type SoundsLoaded = { soundJump: HTMLAudioElement, soundAou: HTMLAudioElement, soundBip: HTMLAudioElement, music: HTMLAudioElement }
+type SoundsLoaded = {
+    soundJump: HTMLAudioElement,
+    soundAou: HTMLAudioElement,
+    soundBip: HTMLAudioElement,
+    soundBop: HTMLAudioElement,
+    soundDududili: HTMLAudioElement,
+    music: HTMLAudioElement
+}
 
 
 function loadSounds(): SoundsLoaded {
@@ -16,7 +23,7 @@ function loadSounds(): SoundsLoaded {
     audioElementJump.loop = false;
     audioElementJump.muted = false;
     audioElementJump.preload = 'auto';
-    audioElementJump.src = './assets/yop.mp3';
+    audioElementJump.src = './assets/sounds/yop.mp3';
     audioElementJump.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementJump);
 
@@ -27,7 +34,7 @@ function loadSounds(): SoundsLoaded {
     audioElementAou.loop = false;
     audioElementAou.muted = false;
     audioElementAou.preload = 'auto';
-    audioElementAou.src = './assets/aou.mp3';
+    audioElementAou.src = './assets/sounds/aou.mp3';
     audioElementAou.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementAou);
 
@@ -38,9 +45,31 @@ function loadSounds(): SoundsLoaded {
     audioElementBip.loop = false;
     audioElementBip.muted = false;
     audioElementBip.preload = 'auto';
-    audioElementBip.src = './assets/bip.mp3';
+    audioElementBip.src = './assets/sounds/bip.mp3';
     audioElementBip.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementBip);
+
+    const audioElementBop: HTMLAudioElement = document.createElement('audio');
+    audioElementBop.id = "bopSound"
+    audioElementBop.controls = false;
+    audioElementBop.autoplay = false;
+    audioElementBop.loop = false;
+    audioElementBop.muted = false;
+    audioElementBop.preload = 'auto';
+    audioElementBop.src = './assets/sounds/bop.mp3';
+    audioElementBop.innerHTML += 'Your browser does not support the audio element.';
+    document.body.appendChild(audioElementBop);
+
+    const audioElementDududili: HTMLAudioElement = document.createElement('audio');
+    audioElementDududili.id = "dududiliSound"
+    audioElementDududili.controls = false;
+    audioElementDududili.autoplay = false;
+    audioElementDududili.loop = false;
+    audioElementDududili.muted = false;
+    audioElementDududili.preload = 'auto';
+    audioElementDududili.src = './assets/sounds/dududili.mp3';
+    audioElementDududili.innerHTML += 'Your browser does not support the audio element.';
+    document.body.appendChild(audioElementDududili);
 
     const audioElementMusic: HTMLAudioElement = document.createElement('audio');
     audioElementMusic.id = "musicSound"
@@ -49,11 +78,11 @@ function loadSounds(): SoundsLoaded {
     audioElementMusic.loop = false;
     audioElementMusic.muted = false;
     audioElementMusic.preload = 'auto';
-    audioElementMusic.src = './assets/mario2-theme-V1.mp3';
+    audioElementMusic.src = './assets/sounds/mario2-theme-V1.mp3';
     audioElementMusic.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementMusic);
 
-    return { soundJump: audioElementJump, soundAou: audioElementAou, soundBip: audioElementBip, music: audioElementMusic }
+    return { soundJump: audioElementJump, soundAou: audioElementAou, soundBip: audioElementBip, soundBop: audioElementBop, soundDududili: audioElementDududili, music: audioElementMusic }
 
 }
 
@@ -82,7 +111,7 @@ function createStartButton(soundsLoaded: SoundsLoaded): HTMLButtonElement {
         soundsLoaded.soundAou.volume = 0.0
         soundsLoaded.soundAou.play()
         soundsLoaded.music.loop = true
-        soundsLoaded.music.volume = 0.3
+        soundsLoaded.music.volume = 0.2
         soundsLoaded.music.play()
         new Core(soundsLoaded);
     });

@@ -1,14 +1,21 @@
-import { Application, Assets, Container, FillGradient, Graphics, Rectangle, Sprite, Text, Texture, Ticker } from "pixi.js"
+import { Application, Container, Ticker } from "pixi.js"
 import { Player } from "./player/Player"
 import { Coin } from "./coin/Coin"
 import { Shell } from "./enemies/shell/Shell"
-import { TextService } from "./pixiService/textService/TextService"
 import { BackgroundSky } from "./background/skies/sky/BackgroundSky"
 import { BackgroundSkies } from "./background/skies/BackgroundSkies"
 import { BackgroundGrounds } from "./background/grounds/BackgroundGrounds"
 import { BackgroundGround } from "./background/grounds/ground/BackgroundGround"
+import { Distance } from "./ui/distance/Distance"
+import { Score } from "./ui/score/Score"
 
-type Sounds = { soundJump: HTMLAudioElement, soundBip: HTMLAudioElement, soundAou: HTMLAudioElement }
+type Sounds = {
+    soundJump: HTMLAudioElement,
+    soundAou: HTMLAudioElement,
+    soundBip: HTMLAudioElement,
+    soundBop: HTMLAudioElement,
+    soundDududili: HTMLAudioElement
+}
 
 export class MaoYio {
 
@@ -50,55 +57,11 @@ export class MaoYio {
 
     // ------------------------------------------
 
-    public previousScore = 0
-    public score = { value: 0 }
-    public scoreTextContainer: Text = new Text({
-        text: this.score.value + " $",
-        style: {
-            fontFamily: 'Arial',
-            fontSize: 32,
-            fill: new FillGradient({
-                end: { x: 1, y: 1 },
-                colorStops: [
-                    { offset: 0, color: 0x44FF22 },
-                    { offset: 1, color: 0x11AA44 }
-                ]
-            }),
-            stroke: { color: '#4a1850', width: 5 },
-            dropShadow: {
-                color: '#000000',
-                blur: 4,
-                distance: 6
-            },
-            align: 'center'
-        },
-    })
+    public score: Score
 
     // ------------------------------------------
 
-    public distance = { value: 0 }
-    public messageDistanceTrigger = { value: 5 }
-    public distanceTextContainer: Text = new Text({
-        text: this.distance.value + " m",
-        style: {
-            fontFamily: 'Arial',
-            fontSize: 32,
-            fill: new FillGradient({
-                end: { x: 1, y: 1 },
-                colorStops: [
-                    { offset: 0, color: 0xFFFF00 },
-                    { offset: 1, color: 0x00FFFF }
-                ]
-            }),
-            stroke: { color: '#4a1850', width: 5 },
-            dropShadow: {
-                color: '#000000',
-                blur: 4,
-                distance: 6
-            },
-            align: 'center'
-        },
-    })
+    public distance: Distance
 
     // ------------------------------------------
 
@@ -108,14 +71,11 @@ export class MaoYio {
 
     // ------------------------------------------
 
-    private ispaused = true
-    private textState = 0
+    private isGamePause = { value: true }
 
     // ------------------------------------------
 
     private container: Container
-    private textService: TextService
-    private textContainer: Container
 
     // ------------------------------------------
 
@@ -124,8 +84,11 @@ export class MaoYio {
         this.getWidthScreen = () => { return app.screen.width }
         this.getHeightScreen = () => { return app.screen.height }
         this.container = container
-        container.removeChildren();
+        this.container.removeChildren();
 
+        // ------------------
+        // --- IMAGE --------
+        // ------------------
         const backgroundSky01 = new BackgroundSky(
             { x: -0.5, y: 0.0, w: 1.5, h: 1.0 },
             this.container,
@@ -164,290 +127,73 @@ export class MaoYio {
 
         this.coin = new Coin(this.container, this.getWidthScreen, this.getHeightScreen)
 
-        this.textService = new TextService(app);
-        this.textContainer = this.textService.createContinuePopup("Appuyer\npour\ncommencer", this.container)
+        this.distance = new Distance(app, this.container, this.isGamePause)
 
-        container.eventMode = "static"
-        container.onpointerdown = () => {
-            if (this.textState === 0) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 2) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 4) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 6) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 8) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 10) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 12) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 14) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 16) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 18) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 20) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 22) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 24) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 26) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 28) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 30) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 32) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 34) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            else if (this.textState === 36) {
-                this.textContainer.destroy(true)
-                this.ispaused = false
-                this.textState++
-                return
-            }
-            this.player.jump(sounds.soundJump)
-        }
+        this.score = new Score(this.container)
 
+        // ------------------
+        // --- AUDIO --------
+        // ------------------
         this.sounds = sounds
         setTimeout(() => {
+            this.sounds.soundJump.volume = 1.0
             this.sounds.soundAou.volume = 1.0
             this.sounds.soundBip.volume = 1.0
-            this.sounds.soundJump.volume = 1.0
+            this.sounds.soundBop.volume = 1.0
+            this.sounds.soundDududili.volume = 1.0
         }, 1000);
 
-        this.scoreTextContainer.x = 25
-        this.scoreTextContainer.y = 25
-        this.scoreTextContainer.zIndex = 7
+        // ------------------
+        // --- EVENT --------
+        // ------------------
+        this.container.eventMode = "static"
+        this.container.onpointerdown = () => {
+            if (this.distance.onPointerDown()) {
+                sounds.soundDududili.currentTime = 0
+                sounds.soundDududili.play()
+                return
+            }
+            if (this.distance.isOnUse) {
+                return
+            }
+            this.player.jump(sounds)
+        }
 
-        this.distanceTextContainer.x = 25
-        this.distanceTextContainer.y = 75
-        this.distanceTextContainer.zIndex = 7
-
-        container.addChild(this.scoreTextContainer, this.distanceTextContainer);
-
+        // ------------------
+        // --- LOOPS --------
+        // ------------------
         const tickerRender = new Ticker()
         tickerRender.minFPS = 20
         tickerRender.maxFPS = 30
         tickerRender.add(() => {
-            if (this.ispaused) {
+            if (this.isGamePause.value) {
                 return
             }
             this.backGroundSkies.action()
             this.backGroundGrounds.action()
-            this.distanceAction()
+            this.distance.action()
             this.player.playerAction()
             this.shell.shellAction()
             this.coin.coinAction()
-            this.player.interactionBetweenPlayerAndShell(this.shell, this.sounds.soundAou, this.score)
-            this.player.interactionBetweenPlayerAndCoin(this.coin, this.sounds.soundBip, this.score)
+            this.player.interactionBetweenPlayerAndShell(this.shell, this.sounds, this.score)
+            this.player.interactionBetweenPlayerAndCoin(this.coin, this.sounds, this.score)
             this.render()
         })
         tickerRender.start()
+
+        // ------------------
 
         const tickerAnimation = new Ticker()
         tickerAnimation.minFPS = 5
         tickerAnimation.maxFPS = 6
         tickerAnimation.add(() => {
-
             this.player.image.updateIndexSprite()
             this.shell.image.updateIndexSprite()
             this.coin.image.updateIndexSprite()
-
         })
         tickerAnimation.start()
 
-    }
-
-    // ------------------------------------------
-
-    private distanceAction() {
-        this.distance.value += 0.025
-        if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 2) {
-            this.textContainer = this.textService.createContinuePopup("Bravo\nvous avez\nfait 5m", this.container)
-            this.textState = 2
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 10
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 4) {
-            this.textContainer = this.textService.createContinuePopup("les carapaces\nvous font\nperdre 1$", this.container)
-            this.textState = 4
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 15
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 6) {
-            this.textContainer = this.textService.createContinuePopup("les pièces\nvous font\ngagner 1$", this.container)
-            this.textState = 6
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 20
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 8) {
-            this.textContainer = this.textService.createContinuePopup("je n'ai\npas\nd'ami ...", this.container)
-            this.textState = 8
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 25
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 10) {
-            this.textContainer = this.textService.createContinuePopup("tu veux\nêtre\nmon ami ?", this.container)
-            this.textState = 10
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 30
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 12) {
-            this.textContainer = this.textService.createContinuePopup("on fait\nun\nmarathon ?", this.container)
-            this.textState = 12
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 50
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 14) {
-            this.textContainer = this.textService.createContinuePopup("la vie\nc'est comme\nune boite\nde chocolat", this.container)
-            this.textState = 14
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 100
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 16) {
-            this.textContainer = this.textService.createContinuePopup("tu connais\nles crevettes\nde booba ?", this.container)
-            this.textState = 16
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 200
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 18) {
-            this.textContainer = this.textService.createContinuePopup("un jour\nje suis allé\nau Vietnam.", this.container)
-            this.textState = 18
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 210
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 20) {
-            this.textContainer = this.textService.createContinuePopup("mais c'était\npas comme\ndans les films", this.container)
-            this.textState = 20
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 300
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 22) {
-            this.textContainer = this.textService.createContinuePopup("j'ai joué dans\nla ligue de\nbaseball ^^", this.container)
-            this.textState = 22
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 310
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 24) {
-            this.textContainer = this.textService.createContinuePopup("on me disait\ntout le temps\n\"cours Forest !\"", this.container)
-            this.textState = 24
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 400
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 26) {
-            this.textContainer = this.textService.createContinuePopup("j'aimais bien\ncourir\nmoi :)", this.container)
-            this.textState = 26
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 500
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 28) {
-            this.textContainer = this.textService.createContinuePopup("je suis\nfatigué\non arrête ?", this.container)
-            this.textState = 28
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 510
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 30) {
-            this.textContainer = this.textService.createContinuePopup("je suis\nfatigué\nil faut arrêter", this.container)
-            this.textState = 30
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 515
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 32) {
-            this.textContainer = this.textService.createContinuePopup("je suis\nfatigué\nallé stop !", this.container)
-            this.textState = 32
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 517
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 34) {
-            this.textContainer = this.textService.createContinuePopup("j'ai\nmal\ns'il te plait !", this.container)
-            this.textState = 34
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 519
-        }
-        else if (this.distance.value >= this.messageDistanceTrigger.value && this.textState < 36) {
-            this.textContainer = this.textService.createContinuePopup("je ne me sens\npas bien du\ntout ...", this.container)
-            this.textState = 36
-            this.ispaused = true
-            this.messageDistanceTrigger.value = 521
-        }
+        // ------------------
 
     }
 
@@ -457,19 +203,11 @@ export class MaoYio {
 
         this.backGroundSkies.render()
         this.backGroundGrounds.render()
-
         this.player.image.render()
-
         this.shell.image.render()
-
         this.coin.image.render()
-
-        if (this.previousScore !== this.score.value) {
-            this.previousScore = this.score.value
-            this.scoreTextContainer.text = `${this.score.value} $`
-        }
-
-        this.distanceTextContainer.text = `${this.distance.value.toFixed(1)} m`
+        this.score.render()
+        this.distance.render()
 
     }
 

@@ -12,7 +12,7 @@ type BackgroundSkyImageLoaderInput = {
 
 export class BackgroundSkyImageLoader {
 
-    private PATH_ASSET_IMAGE: string = "./assets/sky-A0-256.png";
+    private PATH_ASSET_IMAGE: string = "./assets/images/sky-A0-256.png";
     private Z_INDEX = 1
 
     private backgroundSky: BackgroundSky

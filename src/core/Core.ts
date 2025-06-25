@@ -1,7 +1,13 @@
 import { Application, Container } from "pixi.js";
 import { MaoYio } from "./maoyioGame/MaoYio";
 
-type Sounds = { soundJump: HTMLAudioElement, soundBip: HTMLAudioElement, soundAou: HTMLAudioElement }
+type Sounds = {
+    soundJump: HTMLAudioElement,
+    soundAou: HTMLAudioElement,
+    soundBip: HTMLAudioElement,
+    soundBop: HTMLAudioElement,
+    soundDududili: HTMLAudioElement
+}
 
 export class Core {
 

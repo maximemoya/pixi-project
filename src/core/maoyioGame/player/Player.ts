@@ -1,6 +1,14 @@
 import { Container } from "pixi.js"
 import { Coin } from "../coin/Coin"
-import { PlayerImageLoader } from "./PlayerImageLoader"
+import { PlayerImageLoader } from "./image/PlayerImageLoader"
+import { Shell } from "../enemies/shell/Shell"
+
+type Sounds = {
+    soundJump: HTMLAudioElement,
+    soundAou: HTMLAudioElement,
+    soundBip: HTMLAudioElement,
+    soundBop: HTMLAudioElement,
+}
 
 export class Player {
 
@@ -34,10 +42,10 @@ export class Player {
 
     // -----------------------------------------
 
-    public jump(soundJump: HTMLAudioElement) {
+    public jump(sound: Sounds) {
         if (this.playerState === "onGround") {
-            soundJump.currentTime = 0
-            soundJump.play()
+            sound.soundJump.currentTime = 0
+            sound.soundJump.play()
             this.initialYPosBeforeJump = this.y
             this.playerState = "jumping"
         }
@@ -72,37 +80,46 @@ export class Player {
 
     // -----------------------------------------
 
-    public interactionBetweenPlayerAndShell(shell: { x: number, y: number, w: number, h: number }, soundAou: HTMLAudioElement, score: { value }) {
-        if (this.color === "black" &&
-            this.x < shell.x + shell.w &&
-            this.x + this.w > shell.x &&
-            this.y < shell.y + shell.h &&
-            this.y + this.h > shell.y) {
-            soundAou.currentTime = 0
-            soundAou.play()
+    private collide(position: { x: number, y: number, w: number, h: number }): boolean {
+        return (this.x < position.x + position.w &&
+            this.x + this.w > position.x &&
+            this.y < position.y + position.h &&
+            this.y + this.h > position.y)
+    }
+
+    public interactionBetweenPlayerAndShell(shell: Shell, sound: Sounds, score: { value: number }) {
+
+        if (
+            this.color === "black" && this.playerState !== "fallingDown" && this.collide(shell)
+        ) {
             this.color = "red"
+            sound.soundAou.currentTime = 0
+            sound.soundAou.play()
             if (score.value > 0) {
                 score.value -= 1
             }
         }
-        else if (this.color !== "black" &&
-            (this.x > shell.x + shell.w ||
-                this.x + this.w < shell.x ||
-                this.y > shell.y + shell.h ||
-                this.y + this.h < shell.y)
+        else if (this.playerState === "fallingDown" && this.collide(shell)) {
+            sound.soundBop.currentTime = 0
+            sound.soundBop.play()
+            shell.shellReset()
+        }
+        else if (
+            this.color === "red" && !this.collide(shell)
         ) {
             this.color = "black"
         }
+
     }
 
-    public interactionBetweenPlayerAndCoin(coin: Coin, soundBip: HTMLAudioElement, score: { value }) {
+    public interactionBetweenPlayerAndCoin(coin: Coin, sound: Sounds, score: { value: number }) {
         if (
             this.x < coin.x + coin.w &&
             this.x + this.w > coin.x &&
             this.y < coin.y + coin.h &&
             this.y + this.h > coin.y) {
-            soundBip.currentTime = 0
-            soundBip.play()
+            sound.soundBip.currentTime = 0
+            sound.soundBip.play()
             score.value += 1
             coin.coinReset()
         }

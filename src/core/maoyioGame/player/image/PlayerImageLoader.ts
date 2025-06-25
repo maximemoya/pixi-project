@@ -1,5 +1,5 @@
 import { Assets, Container, Graphics, Rectangle, Sprite, Texture, TextureSource } from "pixi.js";
-import { Player } from "./Player";
+import { Player } from "../Player";
 
 type FN = () => number
 
@@ -19,7 +19,7 @@ export class PlayerImageLoader {
 
     // ------------------------------------------
 
-    private PATH_ASSET_IMAGE: string = "./assets/main-character-A0-64.png";
+    private PATH_ASSET_IMAGE: string = "./assets/images/main-character-A0-64.png";
     private Z_INDEX = 9
 
     // ------------------------------------------

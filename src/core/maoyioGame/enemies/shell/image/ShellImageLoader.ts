@@ -18,7 +18,7 @@ export class ShellImageLoader {
 
     // ------------------------------------------
 
-    private PATH_ASSET_IMAGE: string = "./assets/ennemi-A0-64.png";
+    private PATH_ASSET_IMAGE: string = "./assets/images/ennemi-A0-64.png";
     private Z_INDEX = 10
 
     // ------------------------------------------

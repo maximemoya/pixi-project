@@ -12,7 +12,7 @@ type BackgroundGroundImageLoaderInput = {
 
 export class BackgroundGroundImageLoader {
 
-    private PATH_ASSET_IMAGE: string = "./assets/ground-A0-256.png";
+    private PATH_ASSET_IMAGE: string = "./assets/images/ground-A0-256.png";
     private Z_INDEX = 2
 
     private backgroundGround: BackgroundGround

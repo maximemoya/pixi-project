@@ -18,7 +18,7 @@ export class CoinImageLoader {
 
     // ------------------------------------------
 
-    private PATH_ASSET_IMAGE: string = "./assets/coin-spritesheet-alpha.png";
+    private PATH_ASSET_IMAGE: string = "./assets/images/coin-spritesheet-alpha.png";
     private Z_INDEX = 10
 
     // ------------------------------------------
