@@ -155,6 +155,12 @@ export class Distance {
         { triggerDistance: 700, message: "700m déjà !\n" },
         { triggerDistance: 710, message: "tu es\nfatigué ?\ntu continues!" },
         { triggerDistance: 720, message: "on n'arrête\njamais\non se bat !" },
+        { triggerDistance: 730, message: "on le fait\navec JOIE\nAMOUR\net PLAISIR" },
+        { triggerDistance: 740, message: "j'ai envie\nde gagner\npourquoi ?" },
+        { triggerDistance: 750, message: "parceque\nj'y crois\navec" },
+        { triggerDistance: 760, message: "FORCE\nCOURAGE\net\nDETERMINATION" },
+        { triggerDistance: 770, message: "770m\nbientôt les\n800m\nbravo !" },
+
 
         { triggerDistance: 800, message: "800m\net toujours\nen vie !" },
 
