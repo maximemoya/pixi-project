@@ -44,19 +44,23 @@ export class Distance {
     //  { triggerDistance: 00, message: "BravoBravoB\nBravoBravoB\nBravoBravoB\nBravoBravoB" },
 
     private messageConfig = [
-        { triggerDistance: 5, message: "Bravo\non a\nfait 5m !" },
-        { triggerDistance: 10, message: "attention\noù tu mets\ntes pieds !" },
-        { triggerDistance: 15, message: "moi je mets\nles pieds\noù je veux !" },
-        { triggerDistance: 18, message: "et c'est\nsouvent dans\nla gueule" },
-        { triggerDistance: 23, message: "tu veux\nêtre\nmon ami ?" },
-        { triggerDistance: 26, message: "la vie\nc'est comme\nune boite\nde chocolat" },
-        { triggerDistance: 30, message: "tu connais\nles crevettes\nde booba ?" },
 
-        { triggerDistance: 35, message: "un jour\nje suis allé\nau Vietnam." },
+        { triggerDistance: 5, message: "Bravo\non a\nfait 5m !" },
+        { triggerDistance: 8, message: "attention\noù tu mets\ntes pieds !" },
+        { triggerDistance: 10, message: "moi je mets\nles pieds\noù je veux !" },
+        { triggerDistance: 12, message: "et c'est\nsouvent dans\nla gueule" },
+        { triggerDistance: 15, message: "tu veux\nêtre\nmon ami ?" },
+        { triggerDistance: 18, message: "la vie\nc'est comme\nune boite\nde chocolat" },
+        { triggerDistance: 22, message: "moi j'aime\npas le\nchocolat" },
+        { triggerDistance: 26, message: "tu aimes\nle chocolat ?" },
+
+        { triggerDistance: 30, message: "un jour\nje suis allé\nau restaurant\nVietnamien." },
+        { triggerDistance: 34, message: "chez monsieur\nNaan" },
+        { triggerDistance: 37, message: "il disait\nBienvenue\nau restaurant\nl'Orchidée" },
         { triggerDistance: 40, message: "j'ai mangé\ndes nems !" },
-        { triggerDistance: 45, message: "et après\nje me suis\dit !" },
+        { triggerDistance: 45, message: "et après\nje me suis\ndit !" },
         { triggerDistance: 50, message: "mais qui\na mangé le\ndernier nem?" },
-        { triggerDistance: 55, message: "encore\naujourd'hui\nj'ai pas\nla réponse" },
+        { triggerDistance: 55, message: "j'ai pas\nencore\nla réponse" },
 
         { triggerDistance: 60, message: "c'est\ncomme\nl'histoire\ndu clignotant" },
         { triggerDistance: 63, message: "tu la\nconnais ?" },
@@ -66,12 +70,11 @@ export class Distance {
         { triggerDistance: 77, message: "c'est que\nde la\ncarrosserie !" },
         { triggerDistance: 80, message: "c'était\ntellement\nmarrant" },
         { triggerDistance: 85, message: "et la\nconduite\nsans clé\n XD" },
-
         { triggerDistance: 90, message: "Georgé ?" },
         { triggerDistance: 95, message: "ça va ?\ntu tiens\nle coup ?" },
+
         { triggerDistance: 100, message: "wow déjà\n100m\nfélicitation!" },
         { triggerDistance: 105, message: "j'aime bien\ncourir\navec toi" },
-
         { triggerDistance: 115, message: "je fatigue\nun peu" },
         { triggerDistance: 120, message: "on fait\nune pause ?" },
         { triggerDistance: 123, message: "j'ai mal\naux pieds" },
@@ -94,15 +97,41 @@ export class Distance {
         { triggerDistance: 191, message: "je serai\nderrière\ndans la P4" },
         { triggerDistance: 195, message: "et ceux\nqui veulent\nabandonner" },
         { triggerDistance: 198, message: "je leur\nroule\ndessus !" },
+
         { triggerDistance: 200, message: "200m\nyouhouu !" },
+        { triggerDistance: 210, message: "tu as un\nanuDef toi ?" },
+        { triggerDistance: 220, message: "moi j'ai\nl'anuDef !" },
+        { triggerDistance: 230, message: "j'ai\ndécouvert\nl'anuDef\nil y a 5ans" },
+        { triggerDistance: 240, message: "ici je peux\nconsulter mon\nanuDef !" },
+        { triggerDistance: 250, message: "250m déjà !\nc'est super\nbientôt 300m" },
+        { triggerDistance: 260, message: "j'ai connu\nun Patrice\navec des\nlunettes" },
+        { triggerDistance: 270, message: "un jour\nelle lui a\nenlevé les\nlunettes" },
+        { triggerDistance: 280, message: "et PAF!\nHa Ha Ha !" },
+        { triggerDistance: 290, message: "sacré Patrice" },
 
+        { triggerDistance: 300, message: "300m déjà !\n" },
+        { triggerDistance: 310, message: "à la cantine\npour manger\nen 1er" },
+        { triggerDistance: 320, message: "il fallait\nruser,\nfaire plein\nd'activités" },
+        { triggerDistance: 330, message: "-échec\n-théatre\n-bridge\n-chorale" },
+        { triggerDistance: 340, message: "et des fois\nmanger des\nheures\nsans y aller" },
+        { triggerDistance: 350, message: "350m déjà !\nc'est super\nbientôt 400m" },
 
+        { triggerDistance: 400, message: "400m déjà !\n" },
+        { triggerDistance: 450, message: "450m déjà !\nc'est super\nbientôt 500m" },
 
-        { triggerDistance: 610, message: "si tu es\nfatigué\ncontinue !" },
+        { triggerDistance: 500, message: "500m déjà !\n" },
+        { triggerDistance: 550, message: "550m déjà !\nc'est super\nbientôt 600m" },
+
+        { triggerDistance: 600, message: "600m déjà !\n" },
+        { triggerDistance: 610, message: "tu es\nfatigué ?\ntu continues !" },
         { triggerDistance: 620, message: "on n'arrête\njamais\non se bat !" },
+
         { triggerDistance: 700, message: "700m déjà !\n" },
+
         { triggerDistance: 800, message: "800m\net toujours\nen vie !" },
+
         { triggerDistance: 900, message: "900m !\nbientôt\nle kilomètre !" },
+
         { triggerDistance: 1000, message: "1km !\nyouhou\non arrète ?" },
         { triggerDistance: 1050, message: "allé,\non arrète ?" },
         { triggerDistance: 1100, message: "je suis\nfatigué\non arrête ?" },
@@ -120,6 +149,9 @@ export class Distance {
         { triggerDistance: 1330, message: "j'ai mal...\npitié !" },
         { triggerDistance: 1340, message: "je ne suis\npas content !" },
         { triggerDistance: 1350, message: "j'arrête\nde te parler\nvoila !" },
+        { triggerDistance: 1355, message: "j'arrête\nde parler\nvoila !" },
+        { triggerDistance: 1360, message: "j'arrête\nde parler\nterminé !" },
+
     ]
 
     // ---------------------------------------------------
