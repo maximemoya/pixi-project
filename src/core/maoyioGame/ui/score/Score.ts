@@ -4,7 +4,7 @@ export class Score {
 
     // ---------------------------------------------------
 
-    public value = 0
+    public value = 0.00
     private previousScore = this.value
     private scoreTextContainer: Text = new Text({
         text: this.value + " $",
@@ -34,7 +34,20 @@ export class Score {
         this.scoreTextContainer.x = 25
         this.scoreTextContainer.y = 25
         this.scoreTextContainer.zIndex = 7
+        this.scoreTextContainer.text = `${this.value.toFixed(2)} $`
         container.addChild(this.scoreTextContainer);
+    }
+
+    // ---------------------------------------------------
+
+    public increase() {
+        this.value += 0.01
+    }
+
+    public decrease() {
+        if (this.value >= 0.01) {
+            this.value -= 0.01
+        }
     }
 
     // ---------------------------------------------------
@@ -42,7 +55,7 @@ export class Score {
     public render() {
         if (this.previousScore !== this.value) {
             this.previousScore = this.value
-            this.scoreTextContainer.text = `${this.value} $`
+            this.scoreTextContainer.text = `${this.value.toFixed(2)} $`
         }
     }
 

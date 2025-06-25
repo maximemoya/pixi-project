@@ -2,6 +2,7 @@ import { Container } from "pixi.js"
 import { Coin } from "../coin/Coin"
 import { PlayerImageLoader } from "./image/PlayerImageLoader"
 import { Shell } from "../enemies/shell/Shell"
+import { Score } from "../ui/score/Score"
 
 type Sounds = {
     soundJump: HTMLAudioElement,
@@ -87,7 +88,7 @@ export class Player {
             this.y + this.h > position.y)
     }
 
-    public interactionBetweenPlayerAndShell(shell: Shell, sound: Sounds, score: { value: number }) {
+    public interactionBetweenPlayerAndShell(shell: Shell, sound: Sounds, score: Score) {
 
         if (
             this.color === "black" && this.playerState !== "fallingDown" && this.collide(shell)
@@ -95,9 +96,7 @@ export class Player {
             this.color = "red"
             sound.soundAou.currentTime = 0
             sound.soundAou.play()
-            if (score.value > 0) {
-                score.value -= 1
-            }
+            score.decrease()
         }
         else if (this.playerState === "fallingDown" && this.collide(shell)) {
             sound.soundBop.currentTime = 0
@@ -112,7 +111,7 @@ export class Player {
 
     }
 
-    public interactionBetweenPlayerAndCoin(coin: Coin, sound: Sounds, score: { value: number }) {
+    public interactionBetweenPlayerAndCoin(coin: Coin, sound: Sounds, score: Score) {
         if (
             this.x < coin.x + coin.w &&
             this.x + this.w > coin.x &&
@@ -120,7 +119,7 @@ export class Player {
             this.y + this.h > coin.y) {
             sound.soundBip.currentTime = 0
             sound.soundBip.play()
-            score.value += 1
+            score.increase()
             coin.coinReset()
         }
     }
