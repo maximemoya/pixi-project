@@ -61,4 +61,12 @@ export class Score {
 
     // ---------------------------------------------------
 
+    public reset() {
+        this.value = 0.00
+        this.previousScore = 0.00
+        this.scoreTextContainer.text = `${this.value.toFixed(2)} $`
+    }
+
+    // ---------------------------------------------------
+
 }

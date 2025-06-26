@@ -3,6 +3,7 @@ import { Coin } from "../coin/Coin"
 import { PlayerImageLoader } from "./image/PlayerImageLoader"
 import { Shell } from "../enemies/shell/Shell"
 import { Score } from "../ui/score/Score"
+import { Hearts } from "../hearts/Hearts"
 
 type Sounds = {
     soundJump: HTMLAudioElement,
@@ -20,17 +21,26 @@ export class Player {
     public w = 0.2
     public h = 0.3
     public color = "black"
+
     public playerState: "onGround" | "jumping" | "fallingDown" = "onGround"
+
     public jumpMaxValue = 0.35
     public jumpStep = 0.035
     private jumpValue = 0.0
     private initialYPosBeforeJump = this.y
 
+    public healthValue = 3
+    public healthMax = 3
+
     public image: PlayerImageLoader
+
+    private toDoAfterDeath: () => void
+    public hearts: Hearts
 
     // -----------------------------------------
 
-    constructor(container: Container, getWidthScreen: () => number, getHeightScreen: () => number) {
+    constructor(container: Container, getWidthScreen: () => number, getHeightScreen: () => number, toDoAfterDeath: () => void) {
+        this.toDoAfterDeath = toDoAfterDeath
         this.image = new PlayerImageLoader(
             {
                 player: this,
@@ -96,11 +106,12 @@ export class Player {
             this.color = "red"
             sound.soundAou.currentTime = 0
             sound.soundAou.play()
-            score.decrease()
+            this.healthDecrease()
         }
         else if (this.playerState === "fallingDown" && this.collide(shell)) {
             sound.soundBop.currentTime = 0
             sound.soundBop.play()
+            this.healthIncrease()
             shell.shellReset()
         }
         else if (
@@ -122,6 +133,31 @@ export class Player {
             score.increase()
             coin.coinReset()
         }
+    }
+
+    // -----------------------------------------
+
+    private healthDecrease() {
+        if (this.healthValue > 1) {
+            this.healthValue--
+            this.hearts.actualizeWithPlayer()
+        }
+        else {
+            this.toDoAfterDeath()
+        }
+    }
+
+    private healthIncrease() {
+        if (this.healthValue < this.healthMax) {
+            this.healthValue++
+            this.hearts.actualizeWithPlayer()
+        }
+    }
+
+    // -----------------------------------------
+
+    public reset() {
+        this.healthValue = this.healthMax
     }
 
     // -----------------------------------------

@@ -179,6 +179,7 @@ export class Distance {
         { triggerDistance: 1320, message: "merci\nd'avoir\njoué\nà bientôt." },
 
     ]
+    private savedMessageConfig = this.messageConfig.map(a => a)
 
     // ---------------------------------------------------
 
@@ -233,6 +234,15 @@ export class Distance {
 
     public render() {
         this.distanceTextContainer.text = `${this.distance.value.toFixed(1)} m`
+    }
+
+    // ---------------------------------------------------
+
+    public reset() {
+        this.messageConfig = this.savedMessageConfig.map(a => a)
+        this.distance.value = 0
+        this.textContainer = this.textService.createContinuePopup("Appuyer\npour\ncommencer", this.container)
+        this.isOnUse = true
     }
 
     // ---------------------------------------------------

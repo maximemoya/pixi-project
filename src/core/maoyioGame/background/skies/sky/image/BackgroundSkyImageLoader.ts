@@ -22,7 +22,7 @@ export class BackgroundSkyImageLoader {
 
     private sprite: Sprite = new Sprite();
     private graphics: Graphics = new Graphics();
-    private textures: Texture<TextureSource<any>>[][] = [];
+    private textures: Texture<TextureSource<any>>[][] = [[]];
 
     // ------------------------------------------
 
@@ -51,7 +51,7 @@ export class BackgroundSkyImageLoader {
                 )
                 const idle01 = this.getTextureFrom(texture, rectangle)
 
-                this.textures.push([idle01])
+                this.textures[0] = [idle01]
 
                 this.sprite.texture = this.textures[0][0]
                 this.sprite.x = this.backgroundSky.x * this.getWidthScreen()

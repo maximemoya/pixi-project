@@ -8,6 +8,7 @@ import { BackgroundGrounds } from "./background/grounds/BackgroundGrounds"
 import { BackgroundGround } from "./background/grounds/ground/BackgroundGround"
 import { Distance } from "./ui/distance/Distance"
 import { Score } from "./ui/score/Score"
+import { Hearts } from "./hearts/Hearts"
 
 type Sounds = {
     soundJump: HTMLAudioElement,
@@ -38,6 +39,10 @@ export class MaoYio {
     // private readonly spriteLocationMarioIdle1 = { x: 3, y: 9, w: 17, h: 31 }
     // private readonly spriteLocationMarioIdle2 = { x: 23, y: 9, w: 17, h: 31 }
     // private readonly spriteLocationMarioJump = { x: 63, y: 9, w: 17, h: 31 }
+
+    // ------------------------------------------
+
+    public hearts: Hearts
 
     // ------------------------------------------
 
@@ -121,7 +126,18 @@ export class MaoYio {
             backgroundGround01, backgroundGround02
         )
 
-        this.player = new Player(this.container, this.getWidthScreen, this.getHeightScreen)
+        const toDoAfterDeath = () => {
+            this.player.reset()
+            this.hearts.actualizeWithPlayer()
+            this.coin.coinReset()
+            this.shell.shellReset()
+            this.distance.reset()
+            this.score.reset()
+        }
+
+        this.player = new Player(this.container, this.getWidthScreen, this.getHeightScreen, toDoAfterDeath)
+        this.hearts = new Hearts(this.container, this.getWidthScreen, this.getHeightScreen, this.player)
+        this.player.hearts = this.hearts
 
         this.shell = new Shell(this.container, this.getWidthScreen, this.getHeightScreen)
 
@@ -130,6 +146,8 @@ export class MaoYio {
         this.distance = new Distance(app, this.container, this.isGamePause)
 
         this.score = new Score(this.container)
+
+
 
         // ------------------
         // --- AUDIO --------
@@ -208,6 +226,7 @@ export class MaoYio {
         this.coin.image.render()
         this.score.render()
         this.distance.render()
+        this.hearts.render()
 
     }
 
