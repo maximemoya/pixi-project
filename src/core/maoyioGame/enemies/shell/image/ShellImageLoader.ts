@@ -32,7 +32,7 @@ export class ShellImageLoader {
 
     private sprite: Sprite = new Sprite();
     private graphics: Graphics = new Graphics();
-    private textures: Texture<TextureSource<any>>[][] = [];
+    private textures: Texture<TextureSource<any>>[][] = [[]];
 
     // ------------------------------------------
 
@@ -68,7 +68,7 @@ export class ShellImageLoader {
                 rectangle.x += 64
                 const idle04 = this.getTextureFrom(texture, rectangle)
 
-                this.textures.push([idle01, idle02, idle03, idle04])
+                this.textures[this.IDLE] = [idle01, idle02, idle03, idle04]
 
                 this.sprite.texture = this.textures[this.IDLE][0]
                 this.sprite.x = this.shell.x * this.getWidthScreen()

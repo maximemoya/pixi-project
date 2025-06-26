@@ -32,7 +32,7 @@ export class CoinImageLoader {
 
     private sprite: Sprite = new Sprite();
     private graphics: Graphics = new Graphics();
-    private textures: Texture<TextureSource<any>>[][] = [];
+    private textures: Texture<TextureSource<any>>[][] = [[]];
 
     // ------------------------------------------
 
@@ -66,7 +66,7 @@ export class CoinImageLoader {
                 rectangle.y = 58
                 const idle03 = this.getTextureFrom(texture, rectangle)
 
-                this.textures.push([idle01, idle02, idle03])
+                this.textures[this.IDLE] = [idle01, idle02, idle03]
 
                 this.sprite.texture = this.textures[this.IDLE][0]
                 this.sprite.x = this.coin.x * this.getWidthScreen()

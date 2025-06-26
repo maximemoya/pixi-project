@@ -33,7 +33,7 @@ export class PlayerImageLoader {
 
     private sprite: Sprite = new Sprite();
     private graphics: Graphics = new Graphics();
-    private textures: Texture<TextureSource<any>>[][] = [];
+    private textures: Texture<TextureSource<any>>[][] = [[]];
 
     // ------------------------------------------
 
@@ -66,7 +66,7 @@ export class PlayerImageLoader {
                 rectangle.x = 128
                 const jump01 = this.getTextureFrom(texture, rectangle)
 
-                this.textures.push([idle01, idle02])
+                this.textures[this.IDLE] = [idle01, idle02]
                 this.textures.push([jump01])
 
                 this.sprite.texture = this.textures[this.IDLE][0]
