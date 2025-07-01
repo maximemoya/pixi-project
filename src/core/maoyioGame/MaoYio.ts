@@ -147,8 +147,6 @@ export class MaoYio {
 
         this.score = new Score(this.container)
 
-
-
         // ------------------
         // --- AUDIO --------
         // ------------------

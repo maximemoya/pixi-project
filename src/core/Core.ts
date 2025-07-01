@@ -20,7 +20,12 @@ export class Core {
 
         const pixiHtmlDivElement = document.getElementById("pixi-container");
         this.modifyWidthAccordingWindowOrientation({ pixiHtmlDivElement })
-        await app.init({ background: "#1099bb", resizeTo: pixiHtmlDivElement });
+        await app.init({
+            background: "#1099bb",
+            resizeTo: pixiHtmlDivElement,
+            preference: "webgl",
+            powerPreference: "low-power"
+        });
         pixiHtmlDivElement?.appendChild(app.canvas)
 
         const container = new Container();

@@ -1,3 +1,4 @@
+import { ArmyMain } from "./core/army/ArmyMain";
 import { Core } from "./core/Core";
 
 document.body.appendChild(createStartButton(loadSounds()));
@@ -11,6 +12,7 @@ type SoundsLoaded = {
     soundBop: HTMLAudioElement,
     soundDududili: HTMLAudioElement,
     music: HTMLAudioElement
+    music2: HTMLAudioElement
 }
 
 
@@ -82,7 +84,18 @@ function loadSounds(): SoundsLoaded {
     audioElementMusic.innerHTML += 'Your browser does not support the audio element.';
     document.body.appendChild(audioElementMusic);
 
-    return { soundJump: audioElementJump, soundAou: audioElementAou, soundBip: audioElementBip, soundBop: audioElementBop, soundDududili: audioElementDududili, music: audioElementMusic }
+    const audioElementMusic2: HTMLAudioElement = document.createElement('audio');
+    audioElementMusic2.id = "musicSound"
+    audioElementMusic2.controls = false;
+    audioElementMusic2.autoplay = false;
+    audioElementMusic2.loop = false;
+    audioElementMusic2.muted = false;
+    audioElementMusic2.preload = 'auto';
+    audioElementMusic2.src = './assets/sounds/reloaded-short.mp3';
+    audioElementMusic2.innerHTML += 'Your browser does not support the audio element.';
+    document.body.appendChild(audioElementMusic2);
+
+    return { soundJump: audioElementJump, soundAou: audioElementAou, soundBip: audioElementBip, soundBop: audioElementBop, soundDududili: audioElementDududili, music: audioElementMusic, music2: audioElementMusic2 }
 
 }
 
@@ -106,14 +119,32 @@ function createStartButton(soundsLoaded: SoundsLoaded): HTMLButtonElement {
 
     fullscreenButton.addEventListener('click', () => {
         fullscreenButton.style.display = 'none'; // Cacher le bouton après activation
+        soundsLoaded.soundBop.volume = 0.0
+        soundsLoaded.soundBop.play()
         soundsLoaded.soundBip.volume = 0.0
         soundsLoaded.soundBip.play()
         soundsLoaded.soundAou.volume = 0.0
         soundsLoaded.soundAou.play()
-        soundsLoaded.music.loop = true
-        soundsLoaded.music.volume = 0.2
+        soundsLoaded.music.loop = false
+        soundsLoaded.music.volume = 0.0
         soundsLoaded.music.play()
-        new Core(soundsLoaded);
+        soundsLoaded.music2.loop = true
+        soundsLoaded.music2.volume = 0.4
+        soundsLoaded.music2.play()
+
+        const armyMain = new ArmyMain(soundsLoaded)
+        armyMain.callback = () => {
+            soundsLoaded.music2.loop = false
+            soundsLoaded.music2.pause()
+            soundsLoaded.music.loop = true
+            soundsLoaded.music.currentTime = 0.0
+            soundsLoaded.music.volume = 0.4
+            new Core(soundsLoaded);
+        }
+
+        // soundsLoaded.music.play()
+        // new Core(soundsLoaded);
+
     });
 
     return fullscreenButton
