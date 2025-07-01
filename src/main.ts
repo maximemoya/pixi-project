@@ -129,7 +129,7 @@ function createStartButton(soundsLoaded: SoundsLoaded): HTMLButtonElement {
         soundsLoaded.music.volume = 0.0
         soundsLoaded.music.play()
         soundsLoaded.music2.loop = true
-        soundsLoaded.music2.volume = 0.4
+        soundsLoaded.music2.volume = 0.2
         soundsLoaded.music2.play()
 
         const armyMain = new ArmyMain(soundsLoaded)
@@ -138,7 +138,7 @@ function createStartButton(soundsLoaded: SoundsLoaded): HTMLButtonElement {
             soundsLoaded.music2.pause()
             soundsLoaded.music.loop = true
             soundsLoaded.music.currentTime = 0.0
-            soundsLoaded.music.volume = 0.4
+            soundsLoaded.music.volume = 0.3
             new Core(soundsLoaded);
         }
 

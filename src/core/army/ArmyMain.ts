@@ -131,9 +131,9 @@ export class ArmyMain {
                 fill: 0x6F4FF0,
                 fontFamily: 'monospace',
                 align: 'left',
-                stroke: { color: '#4a1850', width: 2 }, // Purple stroke
+                stroke: { color: '#4a4850', width: 2 }, // Purple stroke
                 dropShadow: {
-                    color: '#000000', // Black shadow
+                    color: '#0000F0', // Black shadow
                     blur: 2, // Shadow blur
                     distance: 2 // Shadow distance
                 }
@@ -213,25 +213,25 @@ export class ArmyMain {
                     text2.text = "C'est bien,\nnous pouvons commencer."
                 }
                 else if (tick500msCount === 5) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:"
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:"
                 }
                 else if (tick500msCount === 7) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:" +
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:" +
                         "\n\>\"Bonjour, comment allez vous?\""
                 }
                 else if (tick500msCount === 9) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:" +
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:" +
                         "\n\>\"Bonjour, comment allez vous?\"\n\>\"Je vais bien,\ncette simulation est agréable.\""
                 }
                 else if (tick500msCount === 11) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:" +
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:" +
                         "\n\>\"Bonjour, comment allez vous?\"\n\>\"Je vais bien,\ncette simulation est agréable.\"" +
-                        "\nest ce que vous aimer\ncette simulation ?"
+                        "\nest ce que vous aimez\ncette simulation ?"
                 }
                 else if (tick500msCount === 13) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:" +
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:" +
                         "\n\>\"Bonjour, comment allez vous?\"\n\>\"Je vais bien,\ncette simulation est agréable.\"" +
-                        "\nest ce que vous aimer\ncette simulation ?\nboutton vert pour (oui)"
+                        "\nest ce que vous aimez\ncette simulation ?\nbouton vert pour (oui)"
                     buttonYesCallBack = () => {
                         sounds.soundBip.play()
                         buttonYes.visible = false
@@ -241,21 +241,21 @@ export class ArmyMain {
                     buttonYes.visible = true
                 }
                 else if (tick500msCount === 23) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:" +
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:" +
                         "\n\>\"Bonjour, comment allez vous?\"\n\>\"Je vais bien,\ncette simulation est agréable.\"" +
-                        "\nest ce que vous aimer\ncette simulation ?\nboutton vert pour (oui)\nallez répondez..."
+                        "\nest ce que vous aimez\ncette simulation ?\nbouton vert pour (oui)\nallez ! répondez..."
                 }
                 else if (tick500msCount === 33) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:" +
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:" +
                         "\n\>\"Bonjour, comment allez vous?\"\n\>\"Je vais bien,\ncette simulation est agréable.\"" +
-                        "\nest ce que vous aimer\ncette simulation ?\nboutton vert pour (oui)\nallez répondez..." +
-                        "\nallez répondez..."
+                        "\nest ce que vous aimez\ncette simulation ?\nbouton vert pour (oui)\nallez ! répondez..." +
+                        "\nallez ! répondez..."
                 }
                 else if (tick500msCount === 43) {
-                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discution:" +
+                    text2.text = "C'est bien,\nnous pouvons commencer.\nNous allons simuler une discussion:" +
                         "\n\>\"Bonjour, comment allez vous?\"\n\>\"Je vais bien,\ncette simulation est agréable.\"" +
-                        "\nest ce que vous aimer\ncette simulation ?\nboutton vert pour (oui)\nallez répondez..." +
-                        "\nallez répondez...\nallez répondez..."
+                        "\nest ce que vous aimez\ncette simulation ?\nbouton vert pour (oui)\nallez ! répondez..." +
+                        "\nallez ! répondez...\nallez ! répondez..."
                 }
             }
             else {
